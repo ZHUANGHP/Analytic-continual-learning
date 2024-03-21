@@ -17,7 +17,7 @@ conda activate AL
 ```
 
 ## Quick Start
-The `backbones` directory provides weights for half of the datasets of [CIFAR-100](https://www.cs.toronto.edu/~kriz/cifar.html) (ResNet-32) and [ImageNet-1k](https://image-net.org/challenges/LSVRC/2010/2010-downloads.php) (ResNet-18). In our algorithms, gradients are not used in continuous learning. **You can run our code even on the CPU.**
+The `backbones` directory provides weights for half of the datasets of [CIFAR-100](https://www.cs.toronto.edu/~kriz/cifar.html) (ResNet-32) and [ImageNet-1k](https://image-net.org/challenges/LSVRC/2010/2010-downloads.php) (ResNet-18). Gradients are not used in continuous learning. **You can run our code even on CPUs.**
 
 Here are some examples.
 
@@ -40,7 +40,7 @@ python main.py GKEAL --dataset CIFAR-100 --base-ratio 0.5 --phases 10 \
 python main.py DS-AL --dataset CIFAR-100 --base-ratio 0.5 --phases 50 \
     --data-root ~/dataset --IL-batch-size 256 --num-workers 16 --backbone resnet18 \
     --gamma 0.1 --gamma-comp 0.1 --compensation-ratio 0.6 --buffer-size 8192 \
-    --cache-features --backbone-path ./backbones/resnet18_ImageNet-1k_0.5_None
+    --cache-features --backbone-path ./backbones/resnet32_CIFAR-100_0.5_None
 ```
 ```bash
 # DS-AL (ImageNet-1k, B50 20 phases)
@@ -118,7 +118,7 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
 
 3. **Image Augmentation**
 
-    Using image augmentation to obtain a more generalizable backbone in the base training dataset can significantly improve performance. No image augmentation is used on the data in the papers. But in this implementation, data augmentation is enabled on by default. So using this implementation will achieve higher performance than reported in the papers (about 2%~5%).
+    Using image augmentation to obtain a more generalizable backbone in the base training dataset can significantly improve performance. No image augmentation is used in the experiments of our papers. But in this implementation, data augmentation is enabled on by default. **So using this implementation will achieve higher performance than reported in the papers (about 2%~5%)**.
 
     Note that we do not use any data augmentation during the re-alignment and the continual learning processes because each sample will be learned only once.
 
