@@ -1,0 +1,28 @@
+# Usage: conda env create -f environment.yaml
+
+name: AL
+
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+
+dependencies:
+  - python=3.11
+
+  # PyTorch
+  - pytorch>=2.2
+  - torchvision
+  - pytorch-cuda  # For Nvidia GPU
+
+  # Necessary Utils
+  - numpy
+  - tqdm
+  - scikit-learn
+  - pip
+  - pip:
+    - prefetch_generator
+
+  # Optional
+  - black
+  - mypy
