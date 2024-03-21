@@ -1,7 +1,5 @@
 saved_models/**
-!backbones/**/backbone.pth
-!backbones/**/backbone.csv
-backbones/*
+.vscode/**
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
