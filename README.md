@@ -99,7 +99,7 @@ Metrics are shown in 95% confidence intervals ($\mu \pm 1.96\sigma$).
 
 ![Top-1 Accuracy](figures/acc@1.svg)
 
-### Hyper-Parameters (Analytic Continual Leanring)
+### Hyper-Parameters (Analytic Continual Learning)
 The backbones are frozen during the incremental learning process of our algorithm. You can use the `--cache-features` option to save the features output by the backbones to improve the efficiency of parameter adjustment.
 
 1. **Buffer Size**
