@@ -103,6 +103,7 @@ Metrics are shown in 95% confidence intervals ($\mu \pm 1.96\sigma$).
 The backbones are frozen during the incremental learning process of our algorithm. You can use the `--cache-features` option to save the features output by the backbones to improve the efficiency of parameter adjustment.
 
 1. **Buffer Size**
+
     For the ACIL, the buffer size means the *expansion size* of the random projection layer. For the GKEAL, the buffer size means the number of *center vectors* of the *Gaussian kernel embedding*. We summarize the "random projection" and the "Guassian projection" into one concept "buffer" in the DS-AL.
 
     On most datasets, the performance of the algorithm first increases and then decreases as the buffer size increases. You can see further experiments on this hyperparameter in our papers. We recommend using a buffer size of 8192 on CIFAR-100 and 16384 or greater on ImageNet for optimal performance. A larger buffer size requires more memory.
@@ -171,12 +172,12 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
     year      = {2024},
 }
 
-@misc{zhuang2024gacil,
-    title={G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning}, 
-    author={Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
-    year={2024},
-    eprint={2403.15706},
-    archivePrefix={arXiv},
-    primaryClass={cs.LG}
+@misc{Zhuang_GACIL_arXiv2024,
+    title         = {{G-ACIL}: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning}, 
+    author        = {Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
+    year          = {2024},
+    eprint        = {2403.15706},
+    archivePrefix = {arXiv},
+    primaryClass  = {cs.LG}
 }
 ```
