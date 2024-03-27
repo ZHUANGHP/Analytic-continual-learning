@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Implementation of the ACIL [1].
+Implementation of the ACIL [1] and the G-ACIL [2].
+The G-ACIL is a generalization of the ACIL in the generalized setting.
+For the popular setting, the G-ACIL is equivalent to the ACIL.
 
 References:
 [1] Zhuang, Huiping, et al.
     "ACIL: Analytic class-incremental learning with absolute memorization and privacy protection."
     Advances in Neural Information Processing Systems 35 (2022): 11602-11614.
+[2] Zhuang, Huiping, et al.
+    "G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning"
+    arXiv preprint arXiv:2403.15706 (2024).
 """
 
 import torch
@@ -58,6 +63,11 @@ class ACIL(torch.nn.Module):
 
 
 class ACILLearner(Learner):
+    """
+    This implementation is for the G-ACIL [2], a general version of the ACIL [1] that 
+    supports mini-batch learning and the gereral CIL setting.
+    In the traditional CIL settings, the G-ACIL is equivalent to the ACIL.
+    """
     def __init__(
         self,
         args: Dict[str, Any],

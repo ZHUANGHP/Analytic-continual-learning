@@ -6,7 +6,11 @@ Official implementation of the following papers.
 
 [2] Zhuang, Huiping, et al. "[GKEAL: Gaussian kernel embedded analytic learning for few-shot class incremental task.](https://openaccess.thecvf.com/content/CVPR2023/html/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.html)" Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2023.
 
-[3] Zhuang, Huiping, et al. "DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning." Proceedings of the AAAI Conference on Artificial Intelligence. 2024.
+[3] Zhuang, Huiping, et al. "[DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning.](https://arxiv.org/abs/2403.17503)" Proceedings of the AAAI Conference on Artificial Intelligence. 2024.
+
+[4] Zhuang, Huiping, et al. "[G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning](https://arxiv.org/abs/2403.15706)" arXiv preprint arXiv:2403.15706 (2024).
+
+![](figures/acc_cmp.jpg)
 
 ## Environment
 We recommend using the [Anaconda](https://anaconda.org/) to install the development environment.
@@ -29,6 +33,13 @@ python main.py ACIL --dataset CIFAR-100 --base-ratio 0.5 --phases 25 \
     --cache-features --backbone-path ./backbones/resnet32_CIFAR-100_0.5_None
 ```
 ```bash
+# G-ACIL (CIFAR-100, B50 25 phases)
+python main.py G-ACIL --dataset CIFAR-100 --base-ratio 0.5 --phases 25 \
+    --data-root ~/dataset --IL-batch-size 256 --num-workers 16 --backbone resnet32 \
+    --gamma 0.1 --buffer-size 8192 \
+    --cache-features --backbone-path ./backbones/resnet32_CIFAR-100_0.5_None
+```
+```bash
 # GKEAL (CIFAR-100, B50 10 phases)
 python main.py GKEAL --dataset CIFAR-100 --base-ratio 0.5 --phases 10 \
     --data-root ~/dataset --IL-batch-size 256 --num-workers 16 --backbone resnet32 \
@@ -38,14 +49,14 @@ python main.py GKEAL --dataset CIFAR-100 --base-ratio 0.5 --phases 10 \
 ```bash
 # DS-AL (CIFAR-100, B50 50 phases)
 python main.py DS-AL --dataset CIFAR-100 --base-ratio 0.5 --phases 50 \
-    --data-root ~/dataset --IL-batch-size 256 --num-workers 16 --backbone resnet18 \
+    --data-root ~/dataset --IL-batch-size 256 --num-workers 16 --backbone resnet32 \
     --gamma 0.1 --gamma-comp 0.1 --compensation-ratio 0.6 --buffer-size 8192 \
     --cache-features --backbone-path ./backbones/resnet32_CIFAR-100_0.5_None
 ```
 ```bash
 # DS-AL (ImageNet-1k, B50 20 phases)
 python main.py DS-AL --dataset ImageNet-1k --base-ratio 0.5 --phases 20 \
-    --data-root ~/dataset --IL-batch-size 4096 --num-workers 16 --backbone resnet32 \
+    --data-root ~/dataset --IL-batch-size 4096 --num-workers 16 --backbone resnet18 \
     --gamma 0.1 --gamma-comp 0.1 --compensation-ratio 1.5 --buffer-size 16384 \
     --cache-features --backbone-path ./backbones/resnet18_ImageNet-1k_0.5_None
 ```
@@ -62,34 +73,39 @@ python main.py ACIL --dataset CIFAR-100 --base-ratio 0.5 --phases 25 \
 ```bash
 # ACIL (ImageNet-1k)
 python main.py ACIL --dataset ImageNet-1k --base-ratio 0.5 --phases 25 \
-    --data-root ~/dataset --batch-size 256 --num-workers 16 --backbone resnet32 \
+    --data-root ~/dataset --batch-size 256 --num-workers 16 --backbone resnet18 \
     --learning-rate 0.5 --label-smoothing 0.05 --base-epochs 300 --weight-decay 5e-5 \
     --gamma 0.1 --buffer-size 16384 --cache-features --IL-batch-size 4096
 ```
 
 ## Reproduction Details
 
-### Benchmarks (B50, 25 phases)
+### Difference Between the ACIL and the G-ACIL
+
+The G-ACIL is a general version of the ACIL for the general CIL setting. For the tradition CIL setting, the G-ACIL is equivalent to the ACIL. Thus, we use the same implementation in this repository.
+
+### Benchmarks (B50, 25 phases, with `TrivialAugmentWide`)
 
 Metrics are shown in 95% confidence intervals ($\mu \pm 1.96\sigma$).
 
-|   Dataset   | Method | Backbone  | Buffer Size | Average Accuracy (%) | Last Phase Accuracy (%) |
-| :---------: | :----: | :-------: | :---------: | :------------------: | :---------------------: |
-|  CIFAR-100  |  ACIL  | ResNet-32 |    8192     |   $71.047\pm0.252$   |    $63.384\pm0.330$     |
-|  CIFAR-100  |  DS-AL | ResNet-32 |    8192     |   $71.277\pm0.251$   |    $64.043\pm0.184$     |
-|  CIFAR-100  |  GKEAL | ResNet-32 |    8192     |   $70.371\pm0.168$   |    $62.301\pm0.191$     |
-| ImageNet-1k |  ACIL  | ResNet-18 |    16384    |   $67.497\pm0.092$   |    $58.349\pm0.111$     |
-| ImageNet-1k |  DS-AL | ResNet-18 |    16384    |   $68.354\pm0.084$   |    $59.762\pm0.086$     |
-| ImageNet-1k |  GKEAL | ResNet-18 |    16384    |   $66.881\pm0.061$   |    $57.295\pm0.105$     |
+|   Dataset   | Method         | Backbone  | Buffer Size | Average Accuracy (%) | Last Phase Accuracy (%) |
+| :---------: | :------------: | :-------: | :---------: | :------------------: | :---------------------: |
+|  CIFAR-100  |  ACIL & G-ACIL | ResNet-32 |    8192     |   $71.047\pm0.252$   |    $63.384\pm0.330$     |
+|  CIFAR-100  |  DS-AL         | ResNet-32 |    8192     |   $71.277\pm0.251$   |    $64.043\pm0.184$     |
+|  CIFAR-100  |  GKEAL         | ResNet-32 |    8192     |   $70.371\pm0.168$   |    $62.301\pm0.191$     |
+| ImageNet-1k |  ACIL & G-ACIL | ResNet-18 |    16384    |   $67.497\pm0.092$   |    $58.349\pm0.111$     |
+| ImageNet-1k |  DS-AL         | ResNet-18 |    16384    |   $68.354\pm0.084$   |    $59.762\pm0.086$     |
+| ImageNet-1k |  GKEAL         | ResNet-18 |    16384    |   $66.881\pm0.061$   |    $57.295\pm0.105$     |
 
-![Top-1 Accuracy](acc@1.svg)
+![Top-1 Accuracy](figures/acc@1.svg)
 
 ### Hyper-Parameters (Analytic Continual Leanring)
 The backbones are frozen during the incremental learning process of our algorithm. You can use the `--cache-features` option to save the features output by the backbones to improve the efficiency of parameter adjustment.
 
 1. **Buffer Size**
+    For the ACIL, the buffer size means the *expansion size* of the random projection layer. For the GKEAL, the buffer size means the number of *center vectors* of the *Gaussian kernel embedding*. We summarize the "random projection" and the "Guassian projection" into one concept "buffer" in the DS-AL.
 
-    On most datasets, the performance of the algorithm first increases and then decreases as the buffer size increases. You can see further experiments on this hyperparameter in our papers. We recommend using a buffer size of 8192 on CIFAR-100 and 16384 or greater on ImageNet for optimal performance. It is worth noting that a larger buffer size requires more memory.
+    On most datasets, the performance of the algorithm first increases and then decreases as the buffer size increases. You can see further experiments on this hyperparameter in our papers. We recommend using a buffer size of 8192 on CIFAR-100 and 16384 or greater on ImageNet for optimal performance. A larger buffer size requires more memory.
 
 2. **$\gamma$ (Coefficient of the Regularization Term)**
 
@@ -153,5 +169,14 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
     booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
     month     = {Feb},
     year      = {2024},
+}
+
+@misc{zhuang2024gacil,
+    title={G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning}, 
+    author={Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
+    year={2024},
+    eprint={2403.15706},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG}
 }
 ```

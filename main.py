@@ -92,7 +92,9 @@ def main(args: Dict[str, Any]):
     dataset_train = load_dataset(train=True, augment=True, **dataset_args)
     dataset_test = load_dataset(train=False, augment=False, **dataset_args)
 
-    if args["method"] == "ACIL":
+    if args["method"] == "ACIL" or args["method"] == "G-ACIL":
+        # The G-ACIL is a generalization of the ACIL in the generalized setting.
+        # For the popular setting, the G-ACIL is equivalent to the ACIL.
         learner = ACILLearner(args, backbone, feature_size, DEVICE)
     elif args["method"] == "DS-AL":
         learner = DSALLearner(args, backbone, feature_size, DEVICE)
@@ -119,6 +121,8 @@ def main(args: Dict[str, Any]):
 
     # Load dataset
     if args["cache_features"]:
+        if "cache_path" not in args:
+            args["cache_path"] = args["saving_root"]
         if not check_cache_features(args["cache_path"]):
             backbone = learner.backbone.eval()
             dataset_train = load_dataset(

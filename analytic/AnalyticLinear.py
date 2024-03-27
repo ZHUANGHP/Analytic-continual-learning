@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Basic analytic linear modules for the analytic learning based CIL [1, 2, 3].
+Basic analytic linear modules for the analytic learning based CIL [1-4].
 
 References:
 [1] Zhuang, Huiping, et al.
@@ -12,6 +12,9 @@ References:
 [3] Zhuang, Huiping, et al.
     "DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning."
     Proceedings of the AAAI Conference on Artificial Intelligence. 2024.
+[4] Zhuang, Huiping, et al.
+    "G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning"
+    arXiv preprint arXiv:2403.15706 (2024).
 """
 
 import torch
@@ -73,7 +76,6 @@ class AnalyticLinear(torch.nn.Linear, metaclass=ABCMeta):
 
 
 class RecursiveLinear(AnalyticLinear):
-
     def __init__(
         self,
         in_features: int,
@@ -92,15 +94,15 @@ class RecursiveLinear(AnalyticLinear):
 
     @torch.no_grad()
     def fit(self, X: torch.Tensor, Y: torch.Tensor) -> None:
-        """The core code of the ACIL.
-        This implementation is different but equivalent to the equations shown in [1],
-        which supports mini-batch learning and the gereral CIL setting (e.g. the Si-Blurry).
-        The peper for the general CIL settings will be published soon.
+        """The core code of the ACIL and the G-ACIL.
+        This implementation, which is different but equivalent to the equations shown in [1],
+        is proposed in the G-ACIL [4], wich supports mini-batch learning and the gereral CIL setting.
         """
         X, Y = X.to(self.weight), Y.to(self.weight)
         if self.bias:
             X = torch.concat((X, torch.ones(X.shape[0], 1)), dim=-1)
 
+        # G-ACIL
         num_targets = Y.shape[1]
         if num_targets > self.out_features:
             increment_size = num_targets - self.out_features
