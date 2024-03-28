@@ -164,15 +164,17 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
     url       = {https://openaccess.thecvf.com/content/CVPR2023/papers/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.pdf}
 }
 
-@InProceedings{Zhuang_DSAL_AAAI2024,
-	title     = {DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning},
-	volume    = {38},
-	url       = {https://ojs.aaai.org/index.php/AAAI/article/view/29670},
-	DOI       = {10.1609/aaai.v38i15.29670},
-	author    = {Zhuang, Huiping and He, Run and Tong, Kai and Zeng, Ziqian and Chen, Cen and Lin, Zhiping},
-	year      = {2024},
-	month     = {Mar.},
-	pages     = {17237-17244}
+@article{Zhuang_DSAL_AAAI2024,
+    title     = {{DS-AL}: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning},
+    author    = {Zhuang, Huiping and He, Run and Tong, Kai and Zeng, Ziqian and Chen, Cen and Lin, Zhiping},
+    journal   = {Proceedings of the AAAI Conference on Artificial Intelligence},
+    volume    = {38},
+    number    = {15},
+    pages     = {17237-17244},
+    year      = {2024},
+    month     = {Mar.},
+    DOI       = {10.1609/aaai.v38i15.29670},
+    url       = {https://ojs.aaai.org/index.php/AAAI/article/view/29670},
 }
 
 @misc{Zhuang_GACIL_arXiv2024,
