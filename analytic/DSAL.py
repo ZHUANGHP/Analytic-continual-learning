@@ -5,7 +5,7 @@ Implementation of the DS-AL [1].
 References:
 [1] Zhuang, Huiping, et al.
     "DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning."
-    Proceedings of the AAAI Conference on Artificial Intelligence. 2024.
+    Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 38. No. 15. 2024.
 """
 
 import torch

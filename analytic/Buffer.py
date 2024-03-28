@@ -11,7 +11,7 @@ References:
     Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2023.
 [3] Zhuang, Huiping, et al.
     "DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning."
-    Proceedings of the AAAI Conference on Artificial Intelligence. 2024.
+    Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 38. No. 15. 2024.
 [4] Zhuang, Huiping, et al.
     "G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning"
     arXiv preprint arXiv:2403.15706 (2024).

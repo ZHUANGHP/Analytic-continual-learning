@@ -6,7 +6,7 @@ Official implementation of the following papers.
 
 [2] Zhuang, Huiping, et al. "[GKEAL: Gaussian kernel embedded analytic learning for few-shot class incremental task.](https://openaccess.thecvf.com/content/CVPR2023/html/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.html)" Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2023.
 
-[3] Zhuang, Huiping, et al. "[DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning.](https://arxiv.org/abs/2403.17503)" Proceedings of the AAAI Conference on Artificial Intelligence. 2024.
+[3] Zhuang, Huiping, et al. "[DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning.](https://ojs.aaai.org/index.php/AAAI/article/view/29670)" Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 38. No. 15. 2024.
 
 [4] Zhuang, Huiping, et al. "[G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning](https://arxiv.org/abs/2403.15706)" arXiv preprint arXiv:2403.15706 (2024).
 
@@ -165,11 +165,14 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
 }
 
 @InProceedings{Zhuang_DSAL_AAAI2024,
-    author    = {Zhuang, Huiping and He, Run and Tong, Kai and Zeng, Ziqian and Chen, Cen and Lin, Zhiping},
-    title     = {{DS-AL}: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning},
-    booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
-    month     = {Feb},
-    year      = {2024},
+	title     = {DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning},
+	volume    = {38},
+	url       = {https://ojs.aaai.org/index.php/AAAI/article/view/29670},
+	DOI       = {10.1609/aaai.v38i15.29670},
+	author    = {Zhuang, Huiping and He, Run and Tong, Kai and Zeng, Ziqian and Chen, Cen and Lin, Zhiping},
+	year      = {2024},
+	month     = {Mar.},
+	pages     = {17237-17244}
 }
 
 @misc{Zhuang_GACIL_arXiv2024,
