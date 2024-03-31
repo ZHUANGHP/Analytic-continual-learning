@@ -221,6 +221,7 @@ class ACILLearner(Learner):
             linear=RecursiveLinear,
         )
 
+    @torch.no_grad()
     def learn(
         self,
         data_loader: loader_t,

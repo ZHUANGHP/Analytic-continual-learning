@@ -1,5 +1,6 @@
 saved_models/**
 .vscode/**
+*.pt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

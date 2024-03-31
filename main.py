@@ -17,6 +17,13 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 def make_dataloader(
     dataset: Dataset, shuffle: bool = False, batch_size: int = 256, num_workers: int = 8
 ) -> DataLoader:
+    config = {
+        "batch_size": batch_size,
+        "shuffle": shuffle,
+        "num_workers": num_workers,
+        "pin_memory": DEVICE.type == "cuda",
+        "pin_memory_device": str(DEVICE) if DEVICE.type == "cuda" else "",
+    }
     try:
         from prefetch_generator import BackgroundGenerator
 
@@ -24,21 +31,9 @@ def make_dataloader(
             def __iter__(self):
                 return BackgroundGenerator(super().__iter__())
 
-        return DataLoaderX(
-            dataset,
-            batch_size,
-            shuffle=shuffle,
-            num_workers=num_workers,
-            pin_memory=True,
-        )
+        return DataLoaderX(dataset, **config)
     except ImportError:
-        return DataLoader(
-            dataset,
-            batch_size,
-            shuffle=shuffle,
-            num_workers=num_workers,
-            pin_memory=True,
-        )
+        return DataLoader(dataset, **config)
 
 
 def check_cache_features(root: str) -> bool:
@@ -72,7 +67,9 @@ def main(args: Dict[str, Any]):
 
     if ("backbone_path" in args) and path.isfile(args["backbone_path"]):
         preload_backbone = True
-        backbone, _, feature_size = torch.load(args["backbone_path"])
+        backbone, _, feature_size = torch.load(
+            args["backbone_path"], map_location=DEVICE
+        )
     else:
         # Load model pre-train on ImageNet if there is no base training dataset.
         preload_backbone = False
