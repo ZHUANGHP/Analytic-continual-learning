@@ -64,10 +64,11 @@ class ACIL(torch.nn.Module):
 
 class ACILLearner(Learner):
     """
-    This implementation is for the G-ACIL [2], a general version of the ACIL [1] that 
+    This implementation is for the G-ACIL [2], a general version of the ACIL [1] that
     supports mini-batch learning and the gereral CIL setting.
     In the traditional CIL settings, the G-ACIL is equivalent to the ACIL.
     """
+
     def __init__(
         self,
         args: Dict[str, Any],

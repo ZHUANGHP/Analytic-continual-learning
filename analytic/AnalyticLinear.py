@@ -47,7 +47,7 @@ class AnalyticLinear(torch.nn.Linear, metaclass=ABCMeta):
     def forward(self, X: torch.Tensor) -> torch.Tensor:
         X = X.to(self.weight)
         if self.bias:
-            X = torch.concat((X, torch.ones(X.shape[0], 1)), dim=-1)
+            X = torch.concat((X, torch.ones(X.shape[0], 1).to(X)), dim=-1)
         return X @ self.weight
 
     @property
@@ -70,8 +70,9 @@ class AnalyticLinear(torch.nn.Linear, metaclass=ABCMeta):
 
     def update(self) -> None:
         assert torch.isfinite(self.weight).all(), (
-            "Pay attention to the numerical stability!"
-            "A possible solution is to set self.dtype=torch.double."
+            "Pay attention to the numerical stability! "
+            "A possible solution is to increase the value of gamma. "
+            "Setting self.dtype=torch.double also helps."
         )
 
 
@@ -88,9 +89,9 @@ class RecursiveLinear(AnalyticLinear):
         factory_kwargs = {"device": device, "dtype": dtype}
 
         # Regularized Feature Autocorrelation Matrix (RFAuM)
-        R = torch.eye(in_features, **factory_kwargs) / self.gamma
-        self.register_buffer("R", R)
         self.R: torch.Tensor
+        R = torch.eye(self.weight.shape[0], **factory_kwargs) / self.gamma
+        self.register_buffer("R", R)
 
     @torch.no_grad()
     def fit(self, X: torch.Tensor, Y: torch.Tensor) -> None:
@@ -100,7 +101,7 @@ class RecursiveLinear(AnalyticLinear):
         """
         X, Y = X.to(self.weight), Y.to(self.weight)
         if self.bias:
-            X = torch.concat((X, torch.ones(X.shape[0], 1)), dim=-1)
+            X = torch.concat((X, torch.ones(X.shape[0], 1).to(X)), dim=-1)
 
         # G-ACIL
         num_targets = Y.shape[1]
