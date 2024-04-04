@@ -82,19 +82,12 @@ class GKEALLearner(ACILLearner):
             X = self.backbone(X)
             total_X.append(X)
             total_y.append(y)
-        X = torch.concat(total_X)
-        y = torch.concat(total_y)
-
-        BATCH_SIZE = int(total_y[0].shape[0])
-        total_X.clear()
-        total_y.clear()
+    
+        self.model.buffer.init(torch.concat(total_X), self.buffer_size)
         torch.cuda.empty_cache()
-        self.model.buffer.init(X, self.buffer_size)
-        for i in tqdm(range(0, X.shape[0], BATCH_SIZE), desc=desc):
-            end = min(i + BATCH_SIZE, X.shape[0])
-            X_batch = X[i : end]
-            X_batch = self.model.buffer(X_batch)
-            Y_batch = torch.nn.functional.one_hot(y[i : end], incremental_size)
-            self.model.analytic_linear.fit(X_batch, Y_batch)
+        for X, y in tqdm(zip(total_X, total_y), total=len(total_X), desc=desc):
+            X = self.model.buffer(X)
+            Y = torch.nn.functional.one_hot(y, incremental_size)
+            self.model.analytic_linear.fit(X, Y)
         self.model.analytic_linear.update()
         self.initialized = True
