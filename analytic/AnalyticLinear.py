@@ -47,7 +47,7 @@ class AnalyticLinear(torch.nn.Linear, metaclass=ABCMeta):
     def forward(self, X: torch.Tensor) -> torch.Tensor:
         X = X.to(self.weight)
         if self.bias:
-            X = torch.concat((X, torch.ones(X.shape[0], 1).to(X)), dim=-1)
+            X = torch.cat((X, torch.ones(X.shape[0], 1).to(X)), dim=-1)
         return X @ self.weight
 
     @property
@@ -97,24 +97,26 @@ class RecursiveLinear(AnalyticLinear):
     def fit(self, X: torch.Tensor, Y: torch.Tensor) -> None:
         """The core code of the ACIL and the G-ACIL.
         This implementation, which is different but equivalent to the equations shown in [1],
-        is proposed in the G-ACIL [4], wich supports mini-batch learning and the gereral CIL setting.
+        is proposed in the G-ACIL [4], which supports mini-batch learning and the general CIL setting.
         """
         X, Y = X.to(self.weight), Y.to(self.weight)
         if self.bias:
-            X = torch.concat((X, torch.ones(X.shape[0], 1).to(X)), dim=-1)
+            X = torch.cat((X, torch.ones(X.shape[0], 1).to(X)), dim=-1)
 
-        # G-ACIL
         num_targets = Y.shape[1]
         if num_targets > self.out_features:
             increment_size = num_targets - self.out_features
             tail = torch.zeros((self.weight.shape[0], increment_size)).to(self.weight)
-            self.weight = torch.concat((self.weight, tail), dim=1)
+            self.weight = torch.cat((self.weight, tail), dim=1)
         elif num_targets < self.out_features:
             increment_size = self.out_features - num_targets
             tail = torch.zeros((Y.shape[0], increment_size)).to(Y)
-            Y = torch.concat((Y, tail), dim=1)
+            Y = torch.cat((Y, tail), dim=1)
 
-        # ACIL
+        # Please update your PyTorch & CUDA if the `cusolver error` occurs.
+        # If you insist on using this version, doing the `torch.inverse` on CPUs might help.
+        # >>> K_inv = torch.eye(X.shape[0]).to(X) + X @ self.R @ X.T
+        # >>> K = torch.inverse(K_inv.cpu()).to(self.weight.device)
         K = torch.inverse(torch.eye(X.shape[0]).to(X) + X @ self.R @ X.T)
         # Equation (10) of ACIL
         self.R -= self.R @ X.T @ K @ X @ self.R

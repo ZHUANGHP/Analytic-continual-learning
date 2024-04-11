@@ -30,7 +30,7 @@ class ClassificationMeter:
         acc5_judge = (y_pred == y_true[:, None]).any(dim=-1)
         self.acc5_cnt += int(acc5_judge.sum().item())
 
-        # Recored the predictions
+        # Record the predictions
         self.prediction = np.concatenate([self.prediction, y_pred[:, 0].cpu().numpy()])
 
     @property
@@ -38,7 +38,7 @@ class ClassificationMeter:
         return float(metrics.accuracy_score(self.labels, self.prediction))
 
     @property
-    def youden_score(self) -> float:
+    def balanced_accuracy(self) -> float:
         result = metrics.balanced_accuracy_score(
             self.labels, self.prediction, adjusted=True
         )

@@ -9,9 +9,8 @@ References:
 """
 
 import torch
-from typing import Callable, Dict, Any
-
 from analytic.ACIL import ACILLearner
+from typing import Callable, Dict, Any
 from .AnalyticLinear import AnalyticLinear, RecursiveLinear
 from .Buffer import activation_t, RandomBuffer
 
@@ -58,7 +57,7 @@ class DSAL(torch.nn.Module):
         return X_main + self.C * X_comp
 
     @torch.no_grad()
-    def fit(self, X: torch.Tensor, y: torch.Tensor, increace_size: int) -> None:
+    def fit(self, X: torch.Tensor, y: torch.Tensor, increase_size: int) -> None:
         num_classes = max(self.main_stream.out_features, int(y.max().item()) + 1)
         Y_main = torch.nn.functional.one_hot(y, num_classes=num_classes)
         X = self.buffer(self.backbone(X))
@@ -70,7 +69,7 @@ class DSAL(torch.nn.Module):
 
         # Previous label cleansing (PLC)
         Y_comp = Y_main - self.main_stream(X_main)
-        Y_comp[:, :-increace_size] = 0
+        Y_comp[:, :-increase_size] = 0
 
         # Train the compensation stream
         X_comp = self.activation_comp(X)

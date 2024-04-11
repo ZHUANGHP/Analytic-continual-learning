@@ -2,6 +2,11 @@
 """
 Implementation of the GKEAL [1].
 
+The GKEAL is a CIL method specially proposed for the few-shot CIL.
+But the implementation here is just a simplified version for common CIL settings.
+Compared with the method proposed in the paper, we do not perform image augmentation here.
+Each sample will only be learned once by default.
+
 References:
 [1] Zhuang, Huiping, et al.
     "GKEAL: Gaussian Kernel Embedded Analytic Learning for Few-Shot Class Incremental Task."
@@ -49,6 +54,9 @@ class GKEALLearner(ACILLearner):
         device=None,
     ) -> None:
         self.initialized = False
+        # The width-adjusting parameter β controls the width of the Gaussian kernels.
+        # There is a comfortable range for σ at around [5, 15] for CIFAR-100 and ImageNet-1k
+        # that gives good results, where β = 1 / (2σ²).
         self.sigma = args["sigma"]
         super().__init__(args, backbone, backbone_output, device)
 
@@ -76,14 +84,14 @@ class GKEALLearner(ACILLearner):
             return super().learn(data_loader, incremental_size, desc)
         total_X = []
         total_y = []
-        for X, y in tqdm(data_loader, desc=desc):
+        for X, y in tqdm(data_loader, desc="Selecting center vectors"):
             X: torch.Tensor = X.to(self.device, non_blocking=True)
             y: torch.Tensor = y.to(self.device, non_blocking=True)
             X = self.backbone(X)
             total_X.append(X)
             total_y.append(y)
-    
-        self.model.buffer.init(torch.concat(total_X), self.buffer_size)
+
+        self.model.buffer.init(torch.cat(total_X), self.buffer_size)
         torch.cuda.empty_cache()
         for X, y in tqdm(zip(total_X, total_y), total=len(total_X), desc=desc):
             X = self.model.buffer(X)

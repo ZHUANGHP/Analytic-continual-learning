@@ -64,7 +64,7 @@ _data_group.add_argument(
     "--tasks",
     default=10,
     type=int,
-    help="Number of increnental phases (tasks).",
+    help="Number of incremental phases (tasks).",
 )
 
 _data_group.add_argument(
@@ -79,7 +79,7 @@ _data_group.add_argument(
 _data_group.add_argument(
     "--cache-features",
     action="store_true",
-    help="Load the features extracted by the frozen backbone to speed up inferencing.",
+    help="Load the features extracted by the frozen backbone to speed up inference.",
 )
 
 # Model settings
@@ -231,7 +231,9 @@ def load_args() -> Dict[str, Any]:
     if args["IL_batch_size"] is None:
         args["IL_batch_size"] = args["batch_size"]
 
-    saving_root = path.join(saving_root, datetime.now().isoformat(timespec="seconds"))
+    # Windows does not support ":" in the path
+    current_time = datetime.now().isoformat(timespec="seconds").replace(":", "-")
+    saving_root = path.join(saving_root, current_time)
     args["saving_root"] = saving_root
     args["argv"] = str(argv)
     makedirs(saving_root, exist_ok=True)

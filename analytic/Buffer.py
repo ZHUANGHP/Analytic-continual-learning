@@ -73,6 +73,8 @@ class GaussianKernel(Buffer):
         self, mean: torch.Tensor, sigma: float = 1, device=None, dtype=torch.float
     ) -> None:
         super().__init__()
+        self.device = device
+        self.dtype = dtype
         factory_kwargs = {"device": device, "dtype": dtype}
         assert len(mean.shape) == 2, "The mean should be a 2D tensor."
         mean = mean[None, :, :].to(**factory_kwargs)
@@ -82,11 +84,19 @@ class GaussianKernel(Buffer):
 
     @torch.no_grad()
     def forward(self, X: torch.Tensor) -> torch.Tensor:
-        X = torch.square_(torch.cdist(X, self.mean))
+        X = torch.square_(torch.cdist(X.to(self.mean), self.mean))
         return torch.exp_(X.mul_(-self.beta))
 
     def init(self, X: torch.Tensor, size: Optional[int] = None) -> None:
         if size is not None:
-            idx = torch.randperm(size).to(X.device)
-            X = X[idx]
-        self.mean = X
+            if size <= X.shape[0]:
+                idx = torch.randperm(size).to(X.device)
+                X = X[idx]
+            else:
+                # The buffer size is suggested to be greater than the number of initial samples.
+                # Generate center vectors randomly
+                n_require = size - X.shape[0]
+                W_proj = torch.normal(mean=0, std=1, size=(n_require, X.shape[0])).to(X)
+                W_proj /= torch.sum(W_proj, dim=0)
+                X = torch.cat([X, W_proj @ X], dim=0)
+        self.mean = X.to(self.mean)

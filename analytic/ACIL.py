@@ -65,7 +65,7 @@ class ACIL(torch.nn.Module):
 class ACILLearner(Learner):
     """
     This implementation is for the G-ACIL [2], a general version of the ACIL [1] that
-    supports mini-batch learning and the gereral CIL setting.
+    supports mini-batch learning and the general CIL setting.
     In the traditional CIL settings, the G-ACIL is equivalent to the ACIL.
     """
 
@@ -233,7 +233,7 @@ class ACILLearner(Learner):
         for X, y in tqdm(data_loader, desc=desc):
             X: torch.Tensor = X.to(self.device, non_blocking=True)
             y: torch.Tensor = y.to(self.device, non_blocking=True)
-            self.model.fit(X, y, increace_size=incremental_size)
+            self.model.fit(X, y, increase_size=incremental_size)
 
     def before_validation(self) -> None:
         self.model.update()
