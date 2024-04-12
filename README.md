@@ -127,7 +127,7 @@ The backbones are frozen during the incremental learning process of our algorith
 
 3. **$\beta$ and $\sigma$ (GKEAL Only)**
 
-    In the DS-AL, the width-adjusting parameter $\beta$ controls the width of the Gaussian kernels. There is a comfortable range for $\sigma$ at around $[5, 15]$ for CIFAR-100 and ImageNet-1k that gives good results, where $\beta = \frac{1}{2\sigma^2}$.
+    In the GKEAL, the width-adjusting parameter $\beta$ controls the width of the Gaussian kernels. There is a comfortable range for $\sigma$ at around $[5, 15]$ for CIFAR-100 and ImageNet-1k that gives good results, where $\beta = \frac{1}{2\sigma^2}$.
 
 4. **Compensation Ratio $\mathcal{C}$ (DS-AL Only)**
 
