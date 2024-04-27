@@ -1,7 +1,6 @@
 <p align="left">
     中文</a>&nbsp ｜ &nbsp<a href=".\README.md">English</a>
 </p>
-<br><br>
 
 # 解析持续学习（Analytic Continual Learning）
 
