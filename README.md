@@ -1,3 +1,5 @@
+[中文](.\README_CN.md) ｜ English
+
 # Analytic Continual Learning
 
 Official implementation of the following papers.
