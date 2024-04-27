@@ -1,3 +1,7 @@
+<p align="left">
+    <a href=".\README_CN.md">中文</a>&nbsp ｜ &nbspEnglish
+</p>
+
 # Analytic Continual Learning
 
 Official implementation of the following papers.
