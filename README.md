@@ -16,6 +16,10 @@ Official implementation of the following papers.
 
 **Welcome to join our Tencent QQ group: [954528161](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=qaK4W8Jw6d--VWHlx7iUs93T2qMJT9k_&authKey=5e8hSXX8rALjM12iGwrZ9BmRBP9iUfCuRGNCaZ3%2Bx0msiRFVcSwu%2FuZpeKig1XQH&noverify=0&group_code=954528161). Chinese tutorial is available at [Bilibili](https://www.bilibili.com/video/BV1wq421A7YM/).**
 
+# Dual Branch
+
+We have a dual branch at "[Analytic Federated Learning.](https://github.com/ZHUANGHP/Analytic-federated-learning)" 
+
 ## Environment
 We recommend using the [Anaconda](https://anaconda.org/) to install the development environment.
 
