@@ -16,7 +16,7 @@ Official implementation of the following papers.
 
 **Welcome to join our Tencent QQ group: [954528161](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=qaK4W8Jw6d--VWHlx7iUs93T2qMJT9k_&authKey=5e8hSXX8rALjM12iGwrZ9BmRBP9iUfCuRGNCaZ3%2Bx0msiRFVcSwu%2FuZpeKig1XQH&noverify=0&group_code=954528161). Chinese tutorial is available at [Bilibili](https://www.bilibili.com/video/BV1wq421A7YM/).**
 
-# Dual Branch
+## Dual Branch
 
 We have a dual branch at "[Analytic Federated Learning.](https://github.com/ZHUANGHP/Analytic-federated-learning)" 
 
@@ -201,6 +201,15 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
     author        = {Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
     year          = {2024},
     eprint        = {2403.15706},
+    archivePrefix = {arXiv},
+    primaryClass  = {cs.LG}
+}
+
+@misc{Zhuang_AEF-OCL_arXiv2024,
+    title         = {Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task}, 
+    author        = {Huiping Zhuang and Di Fang and Kai Tong and Yuchen Liu and Ziqian Zeng and Xu Zhou and Cen Chen},
+    year          = {2024},
+    eprint        = {2405.17779},
     archivePrefix = {arXiv},
     primaryClass  = {cs.LG}
 }

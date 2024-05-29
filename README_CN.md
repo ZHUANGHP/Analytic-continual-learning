@@ -16,6 +16,9 @@
 
 **欢迎加入我们的交流学习QQ群: [954528161](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=qaK4W8Jw6d--VWHlx7iUs93T2qMJT9k_&authKey=5e8hSXX8rALjM12iGwrZ9BmRBP9iUfCuRGNCaZ3%2Bx0msiRFVcSwu%2FuZpeKig1XQH&noverify=0&group_code=954528161)。中文解读教程可以在[Bilibili](https://www.bilibili.com/video/BV1wq421A7YM/)中观看。**
 
+# 解析学习的另一分支：解析联邦学习
+我们开源了解析学习的另一分支："[解析联邦学习](https://github.com/ZHUANGHP/Analytic-federated-learning)"相关的工作。
+
 ## 环境配置(Environment)
 我们建议使用[Anaconda](https://anaconda.org/)来配置运行环境。
 
@@ -197,6 +200,15 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     author        = {Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
     year          = {2024},
     eprint        = {2403.15706},
+    archivePrefix = {arXiv},
+    primaryClass  = {cs.LG}
+}
+
+@misc{Zhuang_AEF-OCL_arXiv2024,
+    title         = {Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task}, 
+    author        = {Huiping Zhuang and Di Fang and Kai Tong and Yuchen Liu and Ziqian Zeng and Xu Zhou and Cen Chen},
+    year          = {2024},
+    eprint        = {2405.17779},
     archivePrefix = {arXiv},
     primaryClass  = {cs.LG}
 }
