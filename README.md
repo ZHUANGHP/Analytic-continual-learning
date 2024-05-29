@@ -12,6 +12,8 @@ Official implementation of the following papers.
 
 [4] Zhuang, Huiping, et al. "[G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning](https://arxiv.org/abs/2403.15706)" arXiv preprint arXiv:2403.15706 (2024).
 
+[5] Zhuang, Huiping, et al. "[Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task](https://arxiv.org/abs/2405.17779)" arXiv preprint arXiv:2405.17779 (2024).
+
 ![](figures/acc_cmp.jpg)
 
 **Welcome to join our Tencent QQ group: [954528161](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=qaK4W8Jw6d--VWHlx7iUs93T2qMJT9k_&authKey=5e8hSXX8rALjM12iGwrZ9BmRBP9iUfCuRGNCaZ3%2Bx0msiRFVcSwu%2FuZpeKig1XQH&noverify=0&group_code=954528161). Chinese tutorial is available at [Bilibili](https://www.bilibili.com/video/BV1wq421A7YM/).**

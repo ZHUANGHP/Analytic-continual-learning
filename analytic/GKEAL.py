@@ -13,10 +13,10 @@ References:
     Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2023.
 """
 
+import torch
 from tqdm import tqdm
 from .Learner import loader_t
 from .ACIL import ACIL, ACILLearner
-import torch
 from .Buffer import GaussianKernel
 from .AnalyticLinear import AnalyticLinear, RecursiveLinear
 from typing import Dict, Any

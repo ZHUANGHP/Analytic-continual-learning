@@ -9,7 +9,7 @@ References:
 """
 
 import torch
-from analytic.ACIL import ACILLearner
+from .ACIL import ACILLearner
 from typing import Callable, Dict, Any
 from .AnalyticLinear import AnalyticLinear, RecursiveLinear
 from .Buffer import activation_t, RandomBuffer

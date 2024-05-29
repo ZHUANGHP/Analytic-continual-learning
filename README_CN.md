@@ -1,6 +1,6 @@
 中文 ｜ [English](README.md)
 
-# 解析持续学习(Analytic Continual Learning)
+# 解析持续学习 (Analytic Continual Learning)
 
 该项目的工作已被发表在以下论文中：
 
@@ -12,14 +12,16 @@
 
 [4] Zhuang, Huiping, et al. "[G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning](https://arxiv.org/abs/2403.15706)" arXiv preprint arXiv:2403.15706 (2024).
 
+[5] Zhuang, Huiping, et al. "[Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task](https://arxiv.org/abs/2405.17779)" arXiv preprint arXiv:2405.17779 (2024).
+
 ![](figures/acc_cmp.jpg)
 
 **欢迎加入我们的交流学习QQ群: [954528161](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=qaK4W8Jw6d--VWHlx7iUs93T2qMJT9k_&authKey=5e8hSXX8rALjM12iGwrZ9BmRBP9iUfCuRGNCaZ3%2Bx0msiRFVcSwu%2FuZpeKig1XQH&noverify=0&group_code=954528161)。中文解读教程可以在[Bilibili](https://www.bilibili.com/video/BV1wq421A7YM/)中观看。**
 
-# 解析学习的另一分支：解析联邦学习
-我们开源了解析学习的另一分支："[解析联邦学习](https://github.com/ZHUANGHP/Analytic-federated-learning)"相关的工作。
+## 解析学习的另一分支：解析联邦学习
+我们开源了解析学习的另一分支——“[解析联邦学习](https://github.com/ZHUANGHP/Analytic-federated-learning)”相关的工作。
 
-## 环境配置(Environment)
+## 环境配置 (Environment)
 我们建议使用[Anaconda](https://anaconda.org/)来配置运行环境。
 
 ```bash
@@ -38,7 +40,7 @@ mkdir backbones
 
 我们强烈建议您在Linux中运行我们的算法。当然如果Windows和macOS用户在运行时遇到任何问题也欢迎提交Issues。
 
-## 快速开始(Quick Start)
+## 快速开始 (Quick Start)
 在开始体验算法之前，请您先将基础训练权重（该[发布页](https://github.com/ZHUANGHP/Analytic-continual-learning/releases)中提供）放入`backbones`目录。由于本算法持续学习阶段不需要进行梯度计算，**您甚至可以在CPUs上运行我们的代码。**
 
 这是一些参考案例：
@@ -79,7 +81,7 @@ python main.py DS-AL --dataset ImageNet-1k --base-ratio 0.5 --phases 20 \
     --cache-features --backbone-path ./backbones/resnet18_ImageNet-1k_0.5_None
 ```
 
-## 从零开始训练(Training From Scratch)
+## 从零开始训练 (Training From Scratch)
 
 ```bash
 # ACIL (CIFAR-100)
@@ -96,7 +98,7 @@ python main.py ACIL --dataset ImageNet-1k --base-ratio 0.5 --phases 25 \
     --gamma 0.1 --buffer-size 16384 --cache-features --IL-batch-size 4096
 ```
 
-## 复现的细节(Reproduction Details)
+## 复现的细节 (Reproduction Details)
 
 ### ACIL与G-ACIL之间的区别
 

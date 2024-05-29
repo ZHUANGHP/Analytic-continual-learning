@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Tuple
 from models import load_backbone
 from os import path
 from datasets import Features, load_dataset
-from analytic import ACILLearner, DSALLearner, GKEALLearner
+from analytic import ACILLearner, DSALLearner, GKEALLearner, AEFOCLLearner
 from torch.utils.data import Dataset, DataLoader
 from utils import set_determinism, validate
 from tqdm import tqdm
@@ -97,6 +97,8 @@ def main(args: Dict[str, Any]):
         learner = DSALLearner(args, backbone, feature_size, DEVICE)
     elif args["method"] == "GKEAL":
         learner = GKEALLearner(args, backbone, feature_size, DEVICE)
+    elif args["method"] == "AEF-OCL":
+        learner = AEFOCLLearner(args, backbone, feature_size, DEVICE)
     else:
         raise ValueError(f"Unknown method: {args['method']}")
 

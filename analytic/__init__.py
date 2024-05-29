@@ -4,6 +4,7 @@ from .AnalyticLinear import AnalyticLinear, RecursiveLinear
 from .ACIL import ACIL, ACILLearner
 from .DSAL import DSAL, DSALLearner
 from .GKEAL import GKEAL, GKEALLearner
+from .AEFOCL import AEFOCL, AEFOCLLearner
 
 
 __all__ = [

@@ -15,7 +15,7 @@ _parser = argparse.ArgumentParser(description="Analytic Continual Learning")
 # Method Options
 _parser.add_argument(
     "method",
-    choices=["ACIL", "DS-AL", "GKEAL", "G-ACIL"],
+    choices=["ACIL", "DS-AL", "GKEAL", "G-ACIL", "AEF-OCL"],
     help="The method to use for continual learning.",
 )
 
