@@ -1,28 +1,34 @@
 # -*- coding: utf-8 -*-
 
 import torch
-from config import load_args
-from typing import Any, Dict, List, Tuple
-from models import load_backbone
 from os import path
-from datasets import Features, load_dataset
-from analytic import ACILLearner, DSALLearner, GKEALLearner, AEFOCLLearner
-from torch.utils.data import Dataset, DataLoader
-from utils import set_determinism, validate
 from tqdm import tqdm
-
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+from config import load_args
+from models import load_backbone
+from typing import Any, Dict, List, Tuple
+from datasets import Features, load_dataset
+from utils import set_determinism, validate
+from torch._prims_common import DeviceLikeType
+from torch.utils.data import Dataset, DataLoader
+from analytic import ACILLearner, DSALLearner, GKEALLearner, AEFOCLLearner
 
 
 def make_dataloader(
-    dataset: Dataset, shuffle: bool = False, batch_size: int = 256, num_workers: int = 8
+    dataset: Dataset,
+    shuffle: bool = False,
+    batch_size: int = 256,
+    num_workers: int = 8,
+    device: DeviceLikeType = None,
+    persistent_workers: bool = False,
 ) -> DataLoader:
+    pin_memory = (device is not None) and (device.type == "cuda")
     config = {
         "batch_size": batch_size,
         "shuffle": shuffle,
         "num_workers": num_workers,
-        "pin_memory": DEVICE.type == "cuda",
-        "pin_memory_device": str(DEVICE) if DEVICE.type == "cuda" else "",
+        "pin_memory": pin_memory,
+        "pin_memory_device": str(device) if pin_memory else "",
+        "persistent_workers": persistent_workers,
     }
     try:
         from prefetch_generator import BackgroundGenerator
@@ -46,21 +52,35 @@ def check_cache_features(root: str) -> bool:
 
 @torch.no_grad()
 def cache_features(
-    backbone: torch.nn.Module, dataloader: DataLoader[Tuple[torch.Tensor, torch.Tensor]]
+    backbone: torch.nn.Module,
+    dataloader: DataLoader[Tuple[torch.Tensor, torch.Tensor]],
+    device: DeviceLikeType = None,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     backbone.eval()
     X_all: List[torch.Tensor] = []
     y_all: List[torch.Tensor] = []
     for X, y in tqdm(dataloader, "Caching"):
-        X: torch.Tensor = backbone(X.to(DEVICE))
+        X: torch.Tensor = backbone(X.to(device))
         y: torch.Tensor = y.to(torch.int16, non_blocking=True)
-        X_all.append(X.to("cpu", non_blocking=True))
-        y_all.append(y)
+        X_all.append(X.cpu())
+        y_all.append(y.cpu())
     return torch.cat(X_all), torch.cat(y_all)
 
 
 def main(args: Dict[str, Any]):
     backbone_name = args["backbone"]
+
+    # Select device
+    if args["cpu_only"] or not torch.cuda.is_available():
+        main_device = torch.device("cpu")
+        all_gpus = None
+    elif args["gpus"] is not None:
+        gpus = args["gpus"]
+        main_device = torch.device(f"cuda:{gpus[0]}")
+        all_gpus = [torch.device(f"cuda:{gpu}") for gpu in gpus]
+    else:
+        main_device = torch.device("cuda:0")
+        all_gpus = None
 
     if args["seed"] is not None:
         set_determinism(args["seed"])
@@ -68,7 +88,7 @@ def main(args: Dict[str, Any]):
     if ("backbone_path" in args) and path.isfile(args["backbone_path"]):
         preload_backbone = True
         backbone, _, feature_size = torch.load(
-            args["backbone_path"], map_location=DEVICE
+            args["backbone_path"], map_location=main_device
         )
     else:
         # Load model pre-train on ImageNet if there is no base training dataset.
@@ -77,7 +97,7 @@ def main(args: Dict[str, Any]):
         backbone, _, feature_size = load_backbone(backbone_name, pretrain=load_pretrain)
         if load_pretrain:
             assert args["dataset"] != "ImageNet", "Data may leak!!!"
-    backbone = backbone.to(DEVICE, non_blocking=True)
+    backbone = backbone.to(main_device, non_blocking=True)
 
     dataset_args = {
         "name": args["dataset"],
@@ -89,16 +109,25 @@ def main(args: Dict[str, Any]):
     dataset_train = load_dataset(train=True, augment=True, **dataset_args)
     dataset_test = load_dataset(train=False, augment=False, **dataset_args)
 
+    # Select algorithm
     if args["method"] == "ACIL" or args["method"] == "G-ACIL":
         # The G-ACIL is a generalization of the ACIL in the generalized setting.
         # For the popular setting, the G-ACIL is equivalent to the ACIL.
-        learner = ACILLearner(args, backbone, feature_size, DEVICE)
+        learner = ACILLearner(
+            args, backbone, feature_size, main_device, all_devices=all_gpus
+        )
     elif args["method"] == "DS-AL":
-        learner = DSALLearner(args, backbone, feature_size, DEVICE)
+        learner = DSALLearner(
+            args, backbone, feature_size, main_device, all_devices=all_gpus
+        )
     elif args["method"] == "GKEAL":
-        learner = GKEALLearner(args, backbone, feature_size, DEVICE)
+        learner = GKEALLearner(
+            args, backbone, feature_size, main_device, all_devices=all_gpus
+        )
     elif args["method"] == "AEF-OCL":
-        learner = AEFOCLLearner(args, backbone, feature_size, DEVICE)
+        learner = AEFOCLLearner(
+            args, backbone, feature_size, main_device, all_devices=all_gpus
+        )
     else:
         raise ValueError(f"Unknown method: {args['method']}")
 
@@ -107,10 +136,18 @@ def main(args: Dict[str, Any]):
         train_subset = dataset_train.subset_at_phase(0)
         test_subset = dataset_test.subset_at_phase(0)
         train_loader = make_dataloader(
-            train_subset, True, args["batch_size"], args["num_workers"]
+            train_subset,
+            True,
+            args["batch_size"],
+            args["num_workers"],
+            device=main_device,
         )
         test_loader = make_dataloader(
-            test_subset, False, args["batch_size"], args["num_workers"]
+            test_subset,
+            False,
+            args["batch_size"],
+            args["num_workers"],
+            device=main_device,
         )
         learner.base_training(
             train_loader,
@@ -120,7 +157,7 @@ def main(args: Dict[str, Any]):
 
     # Load dataset
     if args["cache_features"]:
-        if "cache_path" not in args:
+        if "cache_path" not in args or args["cache_path"] is None:
             args["cache_path"] = args["saving_root"]
         if not check_cache_features(args["cache_path"]):
             backbone = learner.backbone.eval()
@@ -135,16 +172,22 @@ def main(args: Dict[str, Any]):
                 False,
                 args["batch_size"],
                 args["num_workers"],
+                device=main_device,
             )
             test_loader = make_dataloader(
                 dataset_test.subset_at_phase(0),
                 False,
                 args["batch_size"],
                 args["num_workers"],
+                device=main_device,
             )
 
-            X_train, y_train = cache_features(backbone, train_loader)
-            X_test, y_test = cache_features(backbone, test_loader)
+            if all_gpus is not None and len(all_gpus) > 1:
+                backbone = torch.nn.DataParallel(backbone, device_ids=all_gpus)
+            X_train, y_train = cache_features(
+                backbone, train_loader, device=main_device
+            )
+            X_test, y_test = cache_features(backbone, test_loader, device=main_device)
             torch.save(X_train, path.join(args["cache_path"], "X_train.pt"))
             torch.save(y_train, path.join(args["cache_path"], "y_train.pt"))
             torch.save(X_test, path.join(args["cache_path"], "X_test.pt"))
@@ -181,10 +224,18 @@ def main(args: Dict[str, Any]):
         train_subset = dataset_train.subset_at_phase(phase)
         test_subset = dataset_test.subset_until_phase(phase)
         train_loader = make_dataloader(
-            train_subset, True, args["IL_batch_size"], args["num_workers"]
+            train_subset,
+            True,
+            args["IL_batch_size"],
+            args["num_workers"],
+            device=main_device,
         )
         test_loader = make_dataloader(
-            test_subset, False, args["IL_batch_size"], args["num_workers"]
+            test_subset,
+            False,
+            args["IL_batch_size"],
+            args["num_workers"],
+            device=main_device,
         )
         if phase == 0:
             learner.learn(train_loader, dataset_train.base_size, "Re-align")

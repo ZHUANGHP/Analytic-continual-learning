@@ -10,9 +10,10 @@ References:
 
 import torch
 from .ACIL import ACILLearner
-from typing import Callable, Dict, Any
+from typing import Callable, Dict, Any, Optional, List
 from .AnalyticLinear import AnalyticLinear, RecursiveLinear
 from .Buffer import activation_t, RandomBuffer
+from torch._prims_common import DeviceLikeType
 
 
 class DSAL(torch.nn.Module):
@@ -88,10 +89,11 @@ class DSALLearner(ACILLearner):
         backbone: torch.nn.Module,
         backbone_output: int,
         device=None,
+        all_devices: Optional[List[DeviceLikeType]] = None,
     ) -> None:
         self.gamma_comp = args["gamma_comp"]
         self.compensation_ratio = args["compensation_ratio"]
-        super().__init__(args, backbone, backbone_output, device)
+        super().__init__(args, backbone, backbone_output, device, all_devices)
 
     def make_model(self) -> None:
         self.model = DSAL(

@@ -1,8 +1,9 @@
 import torch
-from abc import ABCMeta, abstractmethod
-from typing import Union, Dict, Any
-from torch.utils.data import DataLoader
 from os import path
+from abc import ABCMeta, abstractmethod
+from torch.utils.data import DataLoader
+from torch._prims_common import DeviceLikeType
+from typing import Union, Dict, Any, Optional, List
 
 loader_t = DataLoader[Union[torch.Tensor, torch.Tensor]]
 
@@ -14,11 +15,13 @@ class Learner(metaclass=ABCMeta):
         backbone: torch.nn.Module,
         backbone_output: int,
         device=None,
+        all_devices: Optional[List[DeviceLikeType]] = None,
     ) -> None:
         self.args = args
         self.backbone = backbone
         self.backbone_output = backbone_output
         self.device = device
+        self.all_devices = all_devices
 
     @abstractmethod
     def base_training(

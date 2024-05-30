@@ -15,11 +15,12 @@ References:
 
 import torch
 from tqdm import tqdm
+from typing import Dict, Any, List, Optional
+from torch._prims_common import DeviceLikeType
 from .Learner import loader_t
 from .ACIL import ACIL, ACILLearner
 from .Buffer import GaussianKernel
 from .AnalyticLinear import AnalyticLinear, RecursiveLinear
-from typing import Dict, Any
 
 
 class GKEAL(ACIL):
@@ -52,13 +53,14 @@ class GKEALLearner(ACILLearner):
         backbone: torch.nn.Module,
         backbone_output: int,
         device=None,
+        all_devices: Optional[List[DeviceLikeType]] = None,
     ) -> None:
         self.initialized = False
         # The width-adjusting parameter β controls the width of the Gaussian kernels.
         # There is a comfortable range for σ at around [5, 15] for CIFAR-100 and ImageNet-1k
         # that gives good results, where β = 1 / (2σ²).
         self.sigma = args["sigma"]
-        super().__init__(args, backbone, backbone_output, device)
+        super().__init__(args, backbone, backbone_output, device, all_devices)
 
     def make_model(self) -> None:
         self.model = GKEAL(

@@ -26,6 +26,21 @@ _parser.add_argument(
     help="Name of the experiment",
 )
 
+_parser.add_argument(
+    "--cpu-only",
+    action="store_true",
+    help="Run the program on CPU only.",
+)
+
+_parser.add_argument(
+    "--gpus",
+    default=None,
+    type=int,
+    action="extend",
+    nargs="+",
+    help="List of GPUs to use.",
+)
+
 # Dataset settings
 _data_group = _parser.add_argument_group("Dataset arguments")
 _data_group.add_argument(

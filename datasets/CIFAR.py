@@ -24,6 +24,9 @@ class CIFAR10_(DatasetWrapper[Tuple[Tensor, int]]):
         [
             transforms.RandomCrop(32, 4),
             transforms.RandomHorizontalFlip(),
+            transforms.TrivialAugmentWide(
+                interpolation=transforms.InterpolationMode.BILINEAR
+            ),
             transforms.ToImage(),
             transforms.ToDtype(torch.float32, scale=True),
             transforms.Normalize(mean, std, inplace=True),
@@ -68,8 +71,10 @@ class CIFAR100_(DatasetWrapper[Tuple[Tensor, int]]):
     augment_transform = transforms.Compose(
         [
             transforms.RandomCrop(32, 4),
-            transforms.TrivialAugmentWide(),
             transforms.RandomHorizontalFlip(),
+            transforms.TrivialAugmentWide(
+                interpolation=transforms.InterpolationMode.BILINEAR
+            ),
             transforms.ToImage(),
             transforms.ToDtype(torch.float32, scale=True),
             transforms.Normalize(mean, std, inplace=True),

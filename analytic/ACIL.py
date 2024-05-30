@@ -14,13 +14,15 @@ References:
 """
 
 import torch
-from .Buffer import RandomBuffer
-from .AnalyticLinear import AnalyticLinear, RecursiveLinear
-from .Learner import Learner, loader_t
-from typing import Any, Dict
-from tqdm import tqdm
 from os import path
+from tqdm import tqdm
+from typing import Any, Dict, List, Optional
 from utils import set_weight_decay, validate
+from torch._prims_common import DeviceLikeType
+from .Buffer import RandomBuffer
+from torch.nn import DataParallel
+from .Learner import Learner, loader_t
+from .AnalyticLinear import AnalyticLinear, RecursiveLinear
 
 
 class ACIL(torch.nn.Module):
@@ -75,8 +77,9 @@ class ACILLearner(Learner):
         backbone: torch.nn.Module,
         backbone_output: int,
         device=None,
+        all_devices: Optional[List[DeviceLikeType]] = None,
     ) -> None:
-        super().__init__(args, backbone, backbone_output, device)
+        super().__init__(args, backbone, backbone_output, device, all_devices)
         self.learning_rate: float = args["learning_rate"]
         self.buffer_size: int = args["buffer_size"]
         self.gamma: float = args["gamma"]
@@ -94,6 +97,7 @@ class ACILLearner(Learner):
             self.backbone,
             torch.nn.Linear(self.backbone_output, baseset_size),
         ).to(self.device, non_blocking=True)
+        model = self.wrap_data_parallel(model)
 
         if self.args["separate_decay"]:
             params = set_weight_decay(model, self.args["weight_decay"])
@@ -214,7 +218,7 @@ class ACILLearner(Learner):
     def make_model(self) -> None:
         self.model = ACIL(
             self.backbone_output,
-            self.backbone,
+            self.wrap_data_parallel(self.backbone),
             self.buffer_size,
             self.gamma,
             device=self.device,
@@ -240,3 +244,9 @@ class ACILLearner(Learner):
 
     def inference(self, X: torch.Tensor) -> torch.Tensor:
         return self.model(X)
+
+    @torch.no_grad()
+    def wrap_data_parallel(self, model: torch.nn.Module) -> torch.nn.Module:
+        if self.all_devices is not None and len(self.all_devices) > 1:
+            return DataParallel(model, self.all_devices, output_device=self.device)
+        return model
