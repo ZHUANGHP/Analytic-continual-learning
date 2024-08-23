@@ -232,8 +232,9 @@ def load_args() -> Dict[str, Any]:
     args["data_root"] = path.expanduser(args["data_root"])
     if args["cache_path"] is not None:
         assert path.isdir(args["cache_path"]), "The cache path is not a directory."
-        backbone_path = path.join(args["cache_path"], "backbone.pth")
-        args["backbone_path"] = backbone_path if path.isfile(backbone_path) else None
+        args["backbone_path"] = path.join(args["cache_path"], "backbone.pth")
+        assert path.isfile(args["backbone_path"]), \
+            f"Backbone file \"{args['backbone_path']}\" doesn't exist."
     saving_root = path.join(
         "saved_models",
         f"{args['backbone']}_{args['dataset']}_{args['base_ratio']}_{args['dataset_seed']}",

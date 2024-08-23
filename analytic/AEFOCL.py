@@ -42,14 +42,14 @@ class AEFOCL(ACIL):
         super().__init__(
             backbone_output, backbone, buffer_size, gamma, device, dtype, linear
         )
-        self._linear_log = None
+        self._linear_log = dict()
         # History prototype
         self.noise = noise
         # Expectation of the prototypes E[X]
-        self.register_buffer("ex", torch.zeros((0, backbone_output)))
+        self.register_buffer("ex", torch.zeros((0, backbone_output), dtype=torch.double))
         self.ex: torch.Tensor
         # Expectation of the squares of the prototypes E[X^2]
-        self.register_buffer("ex2", torch.zeros((0, backbone_output)))
+        self.register_buffer("ex2", torch.zeros((0, backbone_output), dtype=torch.double))
         self.ex2: torch.Tensor
         # Number of the samples of the prototypes
         self.register_buffer("cnt", torch.zeros((0,), dtype=torch.long))
@@ -59,9 +59,9 @@ class AEFOCL(ACIL):
 
     @torch.no_grad()
     def fit(self, X: torch.Tensor, y: torch.Tensor, *args, **kwargs) -> None:
-        if self._linear_log is not None:
-            self.analytic_linear = self._linear_log
-            self._linear_log = None
+        for name, buffer in self._linear_log.items():
+            self.analytic_linear.register_buffer(name, buffer)
+        self._linear_log.clear()
 
         X = self.backbone(X)
         if (increment_size := int(y.max().item()) - self.ex.shape[0] + 1) > 0:
@@ -80,28 +80,33 @@ class AEFOCL(ACIL):
         for i in labels:
             X_i = X[y == i]
             # Calculate E[X]
-            self.ex[i] += torch.sum(X_i, dim=0)
+            self.ex[i] += torch.sum(X_i.to(self.ex), dim=0)
             # Calculate E[X^2]
-            self.ex2[i] += torch.sum(torch.square(X_i), dim=0)
+            self.ex2[i] += torch.sum(torch.square(X_i.to(self.ex2)), dim=0)
 
         X = self.buffer(X)
         Y = torch.nn.functional.one_hot(y)
         self.analytic_linear.fit(X, Y)
 
     def update(self) -> None:
-        self._linear_log = deepcopy(self.analytic_linear)
         peak_cnt = int(self.cnt.max())
         mean = self.proto_mean
         std = self.proto_std
         print("Counts:", self.cnt.tolist())
+
+        # Backup the iterative classifier
+        for name, buffer in self.analytic_linear.named_buffers():
+            self._linear_log[name] = buffer.clone().detach()
+
         aug_bar = tqdm(
             desc="Augmenting",
-            total=(peak_cnt * self.cnt.shape[0] - int(self.cnt.sum())),
+            total=(peak_cnt * len(self.cnt.nonzero()) - int(self.cnt.sum())),
         )
-        for i in range(self.analytic_linear.out_features):
+        for i in self.cnt.nonzero():
+            i = int(i.item())
             rest_cnt = int(peak_cnt - self.cnt[i])
             while rest_cnt > 0:
-                fill_cnt = min(rest_cnt, 8192)
+                fill_cnt = min(rest_cnt, 8192 * 16)
                 fill_y = torch.empty((fill_cnt,), dtype=torch.long).fill_(i)
                 fill_proto = torch.randn((fill_cnt, self.buffer.in_features)).to(
                     self.buffer.weight
@@ -114,7 +119,7 @@ class AEFOCL(ACIL):
                 self.analytic_linear.fit(fill_proto, fill_y)
                 aug_bar.update(fill_cnt)
                 rest_cnt -= fill_cnt
-        super().update()
+        self.analytic_linear.update()
 
     @property
     def proto_mean(self) -> torch.Tensor:
@@ -123,8 +128,11 @@ class AEFOCL(ACIL):
     @property
     def proto_std(self) -> torch.Tensor:
         std = self.ex2 / self.cnt[:, None] - torch.square(self.proto_mean)
+        std[torch.isnan(std)] = 0
         assert (std >= 0).all()
-        return torch.sqrt(std * (self.cnt / (self.cnt - 1))[:, None])
+        proto_std = torch.sqrt(std * (self.cnt / (self.cnt - 1))[:, None])
+        proto_std[torch.isnan(proto_std)] = 0
+        return proto_std
 
 
 class AEFOCLLearner(ACILLearner):

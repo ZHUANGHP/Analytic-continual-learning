@@ -24,11 +24,11 @@ class Features(DatasetWrapper[tuple[torch.Tensor, torch.LongTensor]]):
         assert augment == False, "Augmentation is not supported for Features dataset"
 
         if train:
-            X: torch.Tensor = torch.load(path.join(root, "X_train.pt"))
-            y: torch.Tensor = torch.load(path.join(root, "y_train.pt"))
+            X: torch.Tensor = torch.load(path.join(root, "X_train.pt"), weights_only=True)
+            y: torch.Tensor = torch.load(path.join(root, "y_train.pt"), weights_only=True)
         else:
-            X: torch.Tensor = torch.load(path.join(root, "X_test.pt"))
-            y: torch.Tensor = torch.load(path.join(root, "y_test.pt"))
+            X: torch.Tensor = torch.load(path.join(root, "X_test.pt"), weights_only=True)
+            y: torch.Tensor = torch.load(path.join(root, "y_test.pt"), weights_only=True)
 
         y = y.to(torch.long, non_blocking=True)
         self.dataset = TensorDataset(X, y)  # type: ignore

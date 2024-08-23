@@ -3,7 +3,7 @@ from os import path
 from abc import ABCMeta, abstractmethod
 from torch.utils.data import DataLoader
 from torch._prims_common import DeviceLikeType
-from typing import Union, Dict, Any, Optional, List
+from typing import Union, Dict, Any, Optional, Sequence
 
 loader_t = DataLoader[Union[torch.Tensor, torch.Tensor]]
 
@@ -15,7 +15,7 @@ class Learner(metaclass=ABCMeta):
         backbone: torch.nn.Module,
         backbone_output: int,
         device=None,
-        all_devices: Optional[List[DeviceLikeType]] = None,
+        all_devices: Optional[Sequence[DeviceLikeType]] = None,
     ) -> None:
         self.args = args
         self.backbone = backbone

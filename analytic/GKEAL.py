@@ -15,7 +15,7 @@ References:
 
 import torch
 from tqdm import tqdm
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, Sequence, Optional
 from torch._prims_common import DeviceLikeType
 from .Learner import loader_t
 from .ACIL import ACIL, ACILLearner
@@ -53,7 +53,7 @@ class GKEALLearner(ACILLearner):
         backbone: torch.nn.Module,
         backbone_output: int,
         device=None,
-        all_devices: Optional[List[DeviceLikeType]] = None,
+        all_devices: Optional[Sequence[DeviceLikeType]] = None,
     ) -> None:
         self.initialized = False
         # The width-adjusting parameter β controls the width of the Gaussian kernels.

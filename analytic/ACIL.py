@@ -16,7 +16,7 @@ References:
 import torch
 from os import path
 from tqdm import tqdm
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional, Sequence
 from utils import set_weight_decay, validate
 from torch._prims_common import DeviceLikeType
 from .Buffer import RandomBuffer
@@ -77,7 +77,7 @@ class ACILLearner(Learner):
         backbone: torch.nn.Module,
         backbone_output: int,
         device=None,
-        all_devices: Optional[List[DeviceLikeType]] = None,
+        all_devices: Optional[Sequence[DeviceLikeType]] = None,
     ) -> None:
         super().__init__(args, backbone, backbone_output, device, all_devices)
         self.learning_rate: float = args["learning_rate"]
@@ -111,7 +111,7 @@ class ACILLearner(Learner):
         )
 
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-            optimizer, T_max=self.base_epochs - self.warmup_epochs, eta_min=1e-6
+            optimizer, T_max=self.base_epochs - self.warmup_epochs, eta_min=1e-6 # type: ignore
         )
         if self.warmup_epochs > 0:
             warmup_scheduler = torch.optim.lr_scheduler.LinearLR(
@@ -248,5 +248,5 @@ class ACILLearner(Learner):
     @torch.no_grad()
     def wrap_data_parallel(self, model: torch.nn.Module) -> torch.nn.Module:
         if self.all_devices is not None and len(self.all_devices) > 1:
-            return DataParallel(model, self.all_devices, output_device=self.device)
+            return DataParallel(model, self.all_devices, output_device=self.device) # type: ignore
         return model

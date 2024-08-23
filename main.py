@@ -5,7 +5,7 @@ from os import path
 from tqdm import tqdm
 from config import load_args
 from models import load_backbone
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Optional
 from datasets import Features, load_dataset
 from utils import set_determinism, validate
 from torch._prims_common import DeviceLikeType
@@ -18,10 +18,10 @@ def make_dataloader(
     shuffle: bool = False,
     batch_size: int = 256,
     num_workers: int = 8,
-    device: DeviceLikeType = None,
+    device: Optional[DeviceLikeType] = None,
     persistent_workers: bool = False,
 ) -> DataLoader:
-    pin_memory = (device is not None) and (device.type == "cuda")
+    pin_memory = (device is not None) and (torch.device(device).type == "cuda")
     config = {
         "batch_size": batch_size,
         "shuffle": shuffle,
@@ -54,7 +54,7 @@ def check_cache_features(root: str) -> bool:
 def cache_features(
     backbone: torch.nn.Module,
     dataloader: DataLoader[Tuple[torch.Tensor, torch.Tensor]],
-    device: DeviceLikeType = None,
+    device: Optional[DeviceLikeType] = None,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     backbone.eval()
     X_all: List[torch.Tensor] = []
@@ -85,10 +85,13 @@ def main(args: Dict[str, Any]):
     if args["seed"] is not None:
         set_determinism(args["seed"])
 
-    if ("backbone_path" in args) and path.isfile(args["backbone_path"]):
+    if "backbone_path" in args:
+        assert path.isfile(
+            args["backbone_path"]
+        ), f"Backbone file \"{args['backbone_path']}\" doesn't exist."
         preload_backbone = True
         backbone, _, feature_size = torch.load(
-            args["backbone_path"], map_location=main_device
+            args["backbone_path"], map_location=main_device, weights_only=False
         )
     else:
         # Load model pre-train on ImageNet if there is no base training dataset.
