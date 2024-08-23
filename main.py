@@ -3,14 +3,13 @@
 import torch
 from os import path
 from tqdm import tqdm
-from config import load_args
+from config import load_args, ALL_METHODS
 from models import load_backbone
 from typing import Any, Dict, List, Tuple, Optional
 from datasets import Features, load_dataset
 from utils import set_determinism, validate
 from torch._prims_common import DeviceLikeType
 from torch.utils.data import Dataset, DataLoader
-from analytic import ACILLearner, DSALLearner, GKEALLearner, AEFOCLLearner
 
 
 def make_dataloader(
@@ -113,26 +112,10 @@ def main(args: Dict[str, Any]):
     dataset_test = load_dataset(train=False, augment=False, **dataset_args)
 
     # Select algorithm
-    if args["method"] == "ACIL" or args["method"] == "G-ACIL":
-        # The G-ACIL is a generalization of the ACIL in the generalized setting.
-        # For the popular setting, the G-ACIL is equivalent to the ACIL.
-        learner = ACILLearner(
-            args, backbone, feature_size, main_device, all_devices=all_gpus
-        )
-    elif args["method"] == "DS-AL":
-        learner = DSALLearner(
-            args, backbone, feature_size, main_device, all_devices=all_gpus
-        )
-    elif args["method"] == "GKEAL":
-        learner = GKEALLearner(
-            args, backbone, feature_size, main_device, all_devices=all_gpus
-        )
-    elif args["method"] == "AEF-OCL":
-        learner = AEFOCLLearner(
-            args, backbone, feature_size, main_device, all_devices=all_gpus
-        )
-    else:
-        raise ValueError(f"Unknown method: {args['method']}")
+    assert args["method"] in ALL_METHODS, f"Unknown method: {args['method']}"
+    learner = ALL_METHODS[args["method"]](
+        args, backbone, feature_size, main_device, all_devices=all_gpus
+    )
 
     # Base training
     if args["base_ratio"] > 0 and not preload_backbone:

@@ -22,15 +22,24 @@ class Learner(metaclass=ABCMeta):
         self.backbone_output = backbone_output
         self.device = device
         self.all_devices = all_devices
+        self.model: torch.nn.Module
 
     @abstractmethod
     def base_training(
-        self, baseset_size: int, train_loader: loader_t, val_loader: loader_t
+        self,
+        train_loader: loader_t,
+        val_loader: loader_t,
+        baseset_size: int,
     ) -> None:
         raise NotImplementedError()
 
     @abstractmethod
-    def learn(self, data_loader: loader_t) -> None:
+    def learn(
+        self,
+        data_loader: loader_t,
+        incremental_size: int,
+        desc: str = "Incremental Learning"
+    ) -> None:
         raise NotImplementedError()
 
     @abstractmethod

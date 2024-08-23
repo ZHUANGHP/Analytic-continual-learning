@@ -2,7 +2,6 @@
 """
 Implementation of the AEF-OCL [1], an analytic method for imbalanced continual learning.
 
-
 References:
 [1] Zhuang, Huiping, et al.
     "Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task"
@@ -106,7 +105,7 @@ class AEFOCL(ACIL):
             i = int(i.item())
             rest_cnt = int(peak_cnt - self.cnt[i])
             while rest_cnt > 0:
-                fill_cnt = min(rest_cnt, 8192 * 16)
+                fill_cnt = min(rest_cnt, 8192)
                 fill_y = torch.empty((fill_cnt,), dtype=torch.long).fill_(i)
                 fill_proto = torch.randn((fill_cnt, self.buffer.in_features)).to(
                     self.buffer.weight

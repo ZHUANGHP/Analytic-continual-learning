@@ -8,14 +8,34 @@ from datetime import datetime
 import yaml
 from sys import argv
 
-__all__ = ["load_args"]
+from analytic import (
+    ACILLearner,
+    DSALLearner,
+    GKEALLearner,
+    AEFOCLLearner,
+    AIRLearner,
+    GeneralizedAIRLearner,
+    Learner,
+)
+
+ALL_METHODS: dict[str, type[Learner]] = {
+    "ACIL": ACILLearner,
+    "G-ACIL": ACILLearner,  # The G-ACIL is a generalization of the ACIL in the generalized setting.
+    "DS-AL": DSALLearner,
+    "GKEAL": GKEALLearner,
+    "AEF-OCL": AEFOCLLearner,
+    "AIR": AIRLearner,
+    "G-AIR": GeneralizedAIRLearner,  # The G-AIL is a generalization of the AIR for generalized CIL.
+}
+
+__all__ = ["load_args", "ALL_METHODS"]
 
 _parser = argparse.ArgumentParser(description="Analytic Continual Learning")
 
 # Method Options
 _parser.add_argument(
     "method",
-    choices=["ACIL", "DS-AL", "GKEAL", "G-ACIL", "AEF-OCL"],
+    choices=ALL_METHODS.keys(),
     help="The method to use for continual learning.",
 )
 

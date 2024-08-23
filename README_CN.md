@@ -14,9 +14,11 @@
 
 [5] Zhuang, Huiping, et al. "[Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task](https://arxiv.org/abs/2405.17779)" arXiv preprint arXiv:2405.17779 (2024).
 
+[6] Fang, Di, et al. "[AIR: Analytic Imbalance Rectifier for Continual Learning.](https://arxiv.org/abs/2408.10349)" arXiv preprint arXiv:2408.10349 (2024).
+
 ![](figures/acc_cmp.jpg)
 
-**欢迎加入我们的交流学习QQ群: [954528161](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=qaK4W8Jw6d--VWHlx7iUs93T2qMJT9k_&authKey=5e8hSXX8rALjM12iGwrZ9BmRBP9iUfCuRGNCaZ3%2Bx0msiRFVcSwu%2FuZpeKig1XQH&noverify=0&group_code=954528161)。中文解读教程可以在[Bilibili](https://www.bilibili.com/video/BV1wq421A7YM/)中观看。**
+**欢迎加入我们的交流QQ群: [954528161](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=qaK4W8Jw6d--VWHlx7iUs93T2qMJT9k_&authKey=5e8hSXX8rALjM12iGwrZ9BmRBP9iUfCuRGNCaZ3%2Bx0msiRFVcSwu%2FuZpeKig1XQH&noverify=0&group_code=954528161)。中文解读教程可以在[Bilibili](https://www.bilibili.com/video/BV1wq421A7YM/)中观看。**
 
 ## 解析学习的另一分支：解析联邦学习
 我们开源了解析学习的另一分支——“[解析联邦学习](https://github.com/ZHUANGHP/Analytic-federated-learning)”相关的工作。
@@ -162,7 +164,7 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
 # 欢迎引用我们的论文
 
 ```bib
-@InProceedings{Zhuang_ACIL_NeurIPS2022,
+@InProceedings{ACIL_Zhuang_NeurIPS2022,
     author    = {ZHUANG, HUIPING and Weng, Zhenyu and Wei, Hongxin and XIE, RENCHUNZI and Toh, Kar-Ann and Lin, Zhiping},
     title     = {{ACIL}: Analytic Class-Incremental Learning with Absolute Memorization and Privacy Protection},
     booktitle = {Advances in Neural Information Processing Systems},
@@ -174,7 +176,7 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     year      = {2022}
 }
 
-@InProceedings{Zhuang_GKEAL_CVPR2023,
+@InProceedings{GKEAL_Zhuang_CVPR2023,
     author    = {Zhuang, Huiping and Weng, Zhenyu and He, Run and Lin, Zhiping and Zeng, Ziqian},
     title     = {{GKEAL}: Gaussian Kernel Embedded Analytic Learning for Few-Shot Class Incremental Task},
     booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
@@ -184,7 +186,7 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     url       = {https://openaccess.thecvf.com/content/CVPR2023/papers/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.pdf}
 }
 
-@article{Zhuang_DSAL_AAAI2024,
+@article{DSAL_Zhuang_AAAI2024,
     title     = {{DS-AL}: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning},
     author    = {Zhuang, Huiping and He, Run and Tong, Kai and Zeng, Ziqian and Chen, Cen and Lin, Zhiping},
     journal   = {Proceedings of the AAAI Conference on Artificial Intelligence},
@@ -197,7 +199,7 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     url       = {https://ojs.aaai.org/index.php/AAAI/article/view/29670},
 }
 
-@misc{Zhuang_GACIL_arXiv2024,
+@misc{GACIL_Zhuang_arXiv2024,
     title         = {{G-ACIL}: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning}, 
     author        = {Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
     year          = {2024},
@@ -206,12 +208,24 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     primaryClass  = {cs.LG}
 }
 
-@misc{Zhuang_AEF-OCL_arXiv2024,
+@misc{AEF-OCL_Zhuang_arXiv2024,
     title         = {Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task}, 
     author        = {Huiping Zhuang and Di Fang and Kai Tong and Yuchen Liu and Ziqian Zeng and Xu Zhou and Cen Chen},
     year          = {2024},
     eprint        = {2405.17779},
     archivePrefix = {arXiv},
     primaryClass  = {cs.LG}
+}
+
+@misc{AIR_Fang_arXiv2024,
+    title         = {{AIR}: Analytic Imbalance Rectifier for Continual Learning}, 
+    author        = {Di Fang and Yinan Zhu and Runze Fang and Cen Chen and Ziqian Zeng and Huiping Zhuang},
+    year          = {2024},
+    month         = {aug},
+    archivePrefix = {arXiv},
+    primaryClass  = {cs.LG},
+    eprint        = {2408.10349},
+    doi           = {10.48550/arXiv.2408.10349},
+    url           = {https://arxiv.org/abs/2408.10349},
 }
 ```
