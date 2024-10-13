@@ -10,9 +10,9 @@
 
 [3] Zhuang, Huiping, et al. "[DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning.](https://ojs.aaai.org/index.php/AAAI/article/view/29670)" Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 38. No. 15. 2024.
 
-[4] Zhuang, Huiping, et al. "[G-ACIL: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning](https://arxiv.org/abs/2403.15706)" arXiv preprint arXiv:2403.15706 (2024).
+[4] Zhuang, Huiping, et al. "[GACL: Exemplar-Free Generalized Analytic Continual Learning](https://neurips.cc/virtual/2024/poster/95330)" Advances in Neural Information Processing Systems 37 (2024). [[arXiv]](https://arxiv.org/abs/2403.15706)
 
-[5] Zhuang, Huiping, et al. "[Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task](https://arxiv.org/abs/2405.17779)" arXiv preprint arXiv:2405.17779 (2024).
+[5] Zhuang, Huiping, et al. "[Analytic Exemplar-Free Online Continual Learning with Large Models for Imbalanced Autonomous Driving Tasks.](https://arxiv.org/abs/2405.17779)" IEEE Transactions on Vehicular Technology (2024).
 
 [6] Fang, Di, et al. "[AIR: Analytic Imbalance Rectifier for Continual Learning.](https://arxiv.org/abs/2408.10349)" arXiv preprint arXiv:2408.10349 (2024).
 
@@ -180,7 +180,7 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     author    = {Zhuang, Huiping and Weng, Zhenyu and He, Run and Lin, Zhiping and Zeng, Ziqian},
     title     = {{GKEAL}: Gaussian Kernel Embedded Analytic Learning for Few-Shot Class Incremental Task},
     booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month     = {June},
+    month     = jun,
     year      = {2023},
     pages     = {7746-7755},
     url       = {https://openaccess.thecvf.com/content/CVPR2023/papers/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.pdf}
@@ -194,34 +194,36 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     number    = {15},
     pages     = {17237-17244},
     year      = {2024},
-    month     = {Mar.},
+    month     = mar,
     DOI       = {10.1609/aaai.v38i15.29670},
     url       = {https://ojs.aaai.org/index.php/AAAI/article/view/29670},
 }
 
-@misc{GACIL_Zhuang_arXiv2024,
-    title         = {{G-ACIL}: Analytic Learning for Exemplar-Free Generalized Class Incremental Learning}, 
-    author        = {Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
-    year          = {2024},
-    eprint        = {2403.15706},
-    archivePrefix = {arXiv},
-    primaryClass  = {cs.LG}
+@InProceedings{GACL_Zhuang_NeurIPS2024,
+    title     = {{GACL}: Exemplar-Free Generalized Analytic Continual Learning},
+    author    = {Zhuang, Huiping and Chen, Yizhu and Fang, Di and He, Run and Tong, Kai and Wei, Hongxin and Zeng, Ziqian and Chen, Cen},
+    year      = {2024},
+    month     = dec,
+    booktitle = {Advances in Neural Information Processing Systems},
+    publisher = {Curran Associates, Inc.},
 }
 
-@misc{AEF-OCL_Zhuang_arXiv2024,
-    title         = {Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task}, 
-    author        = {Huiping Zhuang and Di Fang and Kai Tong and Yuchen Liu and Ziqian Zeng and Xu Zhou and Cen Chen},
-    year          = {2024},
-    eprint        = {2405.17779},
-    archivePrefix = {arXiv},
-    primaryClass  = {cs.LG}
+@article{AEF-OCL_Zhuang_arXiv2024,
+  title       = {Analytic Exemplar-Free Online Continual Learning with Large Models for Imbalanced Autonomous Driving Task},
+  author      = {Zhuang, Huiping and Fang, Di and Tong, Kai and Liu, Yuchen and Zeng, Ziqian and Zhou, Xu and Chen, Cen},
+  year        = {2024},
+  journal     = {IEEE Transactions on Vehicular Technology},
+  volume      = {},
+  number      = {},
+  pages       = {1-10},
+  month       = {},
 }
 
 @misc{AIR_Fang_arXiv2024,
     title         = {{AIR}: Analytic Imbalance Rectifier for Continual Learning}, 
     author        = {Di Fang and Yinan Zhu and Runze Fang and Cen Chen and Ziqian Zeng and Huiping Zhuang},
     year          = {2024},
-    month         = {aug},
+    month         = aug,
     archivePrefix = {arXiv},
     primaryClass  = {cs.LG},
     eprint        = {2408.10349},
