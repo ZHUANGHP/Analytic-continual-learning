@@ -2,7 +2,10 @@
 
 from typing import Callable, Iterable, Optional
 from torch.utils.data import Dataset, Subset
-from torch.utils.data.dataset import T_co
+try:
+    from torch.utils.data.dataset import T_co
+except ImportError:
+    from torch.utils._ordered_set import T_co
 from abc import ABCMeta
 from random import Random
 from numpy import repeat
