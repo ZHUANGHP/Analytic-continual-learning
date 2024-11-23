@@ -208,7 +208,7 @@ G-ACIL是用于一般CIL设置的ACIL的通用版本。在传统的CIL任务上�
     month     = dec
 }
 
-@article{AEF-OCL_Zhuang_arXiv2024,
+@article{AEF-OCL_Zhuang_TVT2024,
     title       = {Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task},
     author      = {Zhuang, Huiping and Fang, Di and Tong, Kai and Liu, Yuchen and Zeng, Ziqian and Zhou, Xu and Chen, Cen},
     year        = {2024},

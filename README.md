@@ -165,6 +165,7 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
 # Cite Our Papers
 
 ```bib
+@InProceedings{ACIL_Zhuang_NeurIPS2022,
     author    = {Zhuang, Huiping and Weng, Zhenyu and Wei, Hongxin and Xie, Renchunzi and Toh, Kar-Ann and Lin, Zhiping},
     title     = {{ACIL}: Analytic Class-Incremental Learning with Absolute Memorization and Privacy Protection},
     booktitle = {Advances in Neural Information Processing Systems},
@@ -208,7 +209,7 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
     month     = dec
 }
 
-@article{AEF-OCL_Zhuang_arXiv2024,
+@article{AEF-OCL_Zhuang_TVT2024,
     title   = {Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task},
     author  = {Zhuang, Huiping and Fang, Di and Tong, Kai and Liu, Yuchen and Zeng, Ziqian and Zhou, Xu and Chen, Cen},
     year    = {2024},
