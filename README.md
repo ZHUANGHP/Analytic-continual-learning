@@ -4,15 +4,15 @@
 
 Official implementation of the following papers.
 
-[1] Zhuang, Huiping, et al. "[ACIL: Analytic class-incremental learning with absolute memorization and privacy protection.](https://proceedings.neurips.cc/paper_files/paper/2022/hash/4b74a42fc81fc7ee252f6bcb6e26c8be-Abstract-Conference.html)" Advances in Neural Information Processing Systems 35 (2022): 11602-11614.
+[1] Zhuang, Huiping, et al. "[ACIL: Analytic Class-Incremental Learning with Absolute Memorization and Privacy Protection.](https://proceedings.neurips.cc/paper_files/paper/2022/hash/4b74a42fc81fc7ee252f6bcb6e26c8be-Abstract-Conference.html)" Advances in Neural Information Processing Systems 35 (2022): 11602-11614.
 
-[2] Zhuang, Huiping, et al. "[GKEAL: Gaussian kernel embedded analytic learning for few-shot class incremental task.](https://openaccess.thecvf.com/content/CVPR2023/html/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.html)" Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2023.
+[2] Zhuang, Huiping, et al. "[GKEAL: Gaussian Kernel Embedded Analytic Learning for Few-Shot Class Incremental Task.](https://openaccess.thecvf.com/content/CVPR2023/html/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.html)" Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2023.
 
 [3] Zhuang, Huiping, et al. "[DS-AL: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning.](https://ojs.aaai.org/index.php/AAAI/article/view/29670)" Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 38. No. 15. 2024.
 
-[4] Zhuang, Huiping, et al. "[GACL: Exemplar-Free Generalized Analytic Continual Learning](https://neurips.cc/virtual/2024/poster/95330)" Advances in Neural Information Processing Systems 37 (2024). [[arXiv]](https://arxiv.org/abs/2403.15706)
+[4] Zhuang, Huiping, et al. "[GACL: Exemplar-Free Generalized Analytic Continual Learning](https://neurips.cc/virtual/2024/poster/95330)" Advances in Neural Information Processing Systems 37 (2024). [[OpenReview]](https://openreview.net/forum?id=P6aJ7BqYlc) [[arXiv]](https://arxiv.org/abs/2403.15706)
 
-[5] Zhuang, Huiping, et al. "[Analytic Exemplar-Free Online Continual Learning with Large Models for Imbalanced Autonomous Driving Tasks.](https://arxiv.org/abs/2405.17779)" IEEE Transactions on Vehicular Technology (2024).
+[5] Zhuang, Huiping, et al. "[Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task.](https://ieeexplore.ieee.org/document/10721370)" IEEE Transactions on Vehicular Technology (2024).
 
 [6] Fang, Di, et al. "[AIR: Analytic Imbalance Rectifier for Continual Learning.](https://arxiv.org/abs/2408.10349)" arXiv preprint arXiv:2408.10349 (2024).
 
@@ -165,64 +165,61 @@ In the base training process, the backbones reaches over 80% top-1 accuracy on t
 # Cite Our Papers
 
 ```bib
-@InProceedings{ACIL_Zhuang_NeurIPS2022,
-    author    = {ZHUANG, HUIPING and Weng, Zhenyu and Wei, Hongxin and XIE, RENCHUNZI and Toh, Kar-Ann and Lin, Zhiping},
+    author    = {Zhuang, Huiping and Weng, Zhenyu and Wei, Hongxin and Xie, Renchunzi and Toh, Kar-Ann and Lin, Zhiping},
     title     = {{ACIL}: Analytic Class-Incremental Learning with Absolute Memorization and Privacy Protection},
     booktitle = {Advances in Neural Information Processing Systems},
     editor    = {S. Koyejo and S. Mohamed and A. Agarwal and D. Belgrave and K. Cho and A. Oh},
     pages     = {11602--11614},
     publisher = {Curran Associates, Inc.},
-    url       = {https://proceedings.neurips.cc/paper_files/paper/2022/file/4b74a42fc81fc7ee252f6bcb6e26c8be-Paper-Conference.pdf},
     volume    = {35},
-    year      = {2022}
+    year      = {2022},
+    url       = {https://proceedings.neurips.cc/paper_files/paper/2022/file/4b74a42fc81fc7ee252f6bcb6e26c8be-Paper-Conference.pdf}
 }
 
 @InProceedings{GKEAL_Zhuang_CVPR2023,
     author    = {Zhuang, Huiping and Weng, Zhenyu and He, Run and Lin, Zhiping and Zeng, Ziqian},
     title     = {{GKEAL}: Gaussian Kernel Embedded Analytic Learning for Few-Shot Class Incremental Task},
-    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    booktitle = {2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
     month     = jun,
     year      = {2023},
-    pages     = {7746-7755},
-    url       = {https://openaccess.thecvf.com/content/CVPR2023/papers/Zhuang_GKEAL_Gaussian_Kernel_Embedded_Analytic_Learning_for_Few-Shot_Class_Incremental_CVPR_2023_paper.pdf}
+    pages     = {7746--7755},
+    doi       = {10.1109/CVPR52729.2023.00748}
 }
 
-@article{DSAL_Zhuang_AAAI2024,
-    title     = {{DS-AL}: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning},
-    author    = {Zhuang, Huiping and He, Run and Tong, Kai and Zeng, Ziqian and Chen, Cen and Lin, Zhiping},
-    journal   = {Proceedings of the AAAI Conference on Artificial Intelligence},
-    volume    = {38},
-    number    = {15},
-    pages     = {17237-17244},
-    year      = {2024},
-    month     = mar,
-    DOI       = {10.1609/aaai.v38i15.29670},
-    url       = {https://ojs.aaai.org/index.php/AAAI/article/view/29670},
+@Article{DS-AL_Zhuang_AAAI2024,
+    title   = {{DS-AL}: A Dual-Stream Analytic Learning for Exemplar-Free Class-Incremental Learning},
+    author  = {Zhuang, Huiping and He, Run and Tong, Kai and Zeng, Ziqian and Chen, Cen and Lin, Zhiping},
+    journal = {Proceedings of the AAAI Conference on Artificial Intelligence},
+    volume  = {38},
+    number  = {15},
+    pages   = {17237--17244},
+    year    = {2024},
+    month   = mar,
+    doi     = {10.1609/aaai.v38i15.29670},
+    url     = {https://ojs.aaai.org/index.php/AAAI/Article/view/29670}
 }
 
 @InProceedings{GACL_Zhuang_NeurIPS2024,
     title     = {{GACL}: Exemplar-Free Generalized Analytic Continual Learning},
-    author    = {Zhuang, Huiping and Chen, Yizhu and Fang, Di and He, Run and Tong, Kai and Wei, Hongxin and Zeng, Ziqian and Chen, Cen},
+    author    = {Huiping Zhuang and Yizhu Chen and Di Fang and Run He and Kai Tong and Hongxin Wei and Ziqian Zeng and Cen Chen},
     year      = {2024},
-    month     = dec,
     booktitle = {Advances in Neural Information Processing Systems},
     publisher = {Curran Associates, Inc.},
+    month     = dec
 }
 
 @article{AEF-OCL_Zhuang_arXiv2024,
-  title       = {Analytic Exemplar-Free Online Continual Learning with Large Models for Imbalanced Autonomous Driving Task},
-  author      = {Zhuang, Huiping and Fang, Di and Tong, Kai and Liu, Yuchen and Zeng, Ziqian and Zhou, Xu and Chen, Cen},
-  year        = {2024},
-  journal     = {IEEE Transactions on Vehicular Technology},
-  volume      = {},
-  number      = {},
-  pages       = {1-10},
-  month       = {},
+    title   = {Online Analytic Exemplar-Free Continual Learning with Large Models for Imbalanced Autonomous Driving Task},
+    author  = {Zhuang, Huiping and Fang, Di and Tong, Kai and Liu, Yuchen and Zeng, Ziqian and Zhou, Xu and Chen, Cen},
+    year    = {2024},
+    journal = {IEEE Transactions on Vehicular Technology},
+    pages   = {1-10},
+    doi     = {10.1109/TVT.2024.3483557}
 }
 
 @misc{AIR_Fang_arXiv2024,
     title         = {{AIR}: Analytic Imbalance Rectifier for Continual Learning}, 
-    author        = {Di Fang and Yinan Zhu and Runze Fang and Cen Chen and Ziqian Zeng and Huiping Zhuang},
+    author        = {Di Fang and Yinan Zhu and Zhiping Lin and Cen Chen and Ziqian Zeng and Huiping Zhuang},
     year          = {2024},
     month         = aug,
     archivePrefix = {arXiv},
