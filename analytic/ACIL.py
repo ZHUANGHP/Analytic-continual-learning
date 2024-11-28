@@ -14,6 +14,8 @@ References:
 """
 
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from os import path
 from tqdm import tqdm
 from typing import Any, Dict, Optional, Sequence
@@ -23,6 +25,28 @@ from .Buffer import RandomBuffer
 from torch.nn import DataParallel
 from .Learner import Learner, loader_t
 from .AnalyticLinear import AnalyticLinear, RecursiveLinear
+
+# 目前仅测试了Resnet32
+# 采用相同的环境运行：
+# python main.py ACIL --dataset CIFAR-100 --base-ratio 0.5 --phases 25 \
+#     --data-root ~/dataset --IL-batch-size 4096 --num-workers 16 --backbone resnet32 \
+#     --gamma 0.1 --buffer-size 8192 \
+#     --backbone-path ./backbones/resnet32_CIFAR-100_0.5_None
+
+class FeatureExtractor(nn.Module):
+    def __init__(self, backbone):
+        super().__init__()
+        self.backbone = backbone
+    
+    def forward(self, x):
+        out = F.relu(self.backbone.bn1(self.backbone.conv1(x)))
+        out1 = self.backbone.layer1(out)
+        out2 = self.backbone.layer2(out1)
+        out3 = self.backbone.layer3(out2)
+        pooled = F.avg_pool2d(out3, out3.size()[3])
+        flat = pooled.view(pooled.size(0), -1)
+        final_output = self.backbone.fc(flat)
+        return out1, out2, out3, final_output
 
 
 class ACIL(torch.nn.Module):
@@ -41,13 +65,48 @@ class ACIL(torch.nn.Module):
         self.backbone = backbone
         self.backbone_output = backbone_output
         self.buffer_size = buffer_size
-        self.buffer = RandomBuffer(backbone_output, buffer_size, **factory_kwargs)
+        self.feature_keys = ['layer1','layer2','layer3', 'final_output']
+        # self.buffer = RandomBuffer(backbone_output, buffer_size, **factory_kwargs)
+        self.buffer = {
+            'layer1': RandomBuffer(16, buffer_size, **factory_kwargs),
+            'layer2': RandomBuffer(32, buffer_size, **factory_kwargs),
+            'layer3': RandomBuffer(64, buffer_size, **factory_kwargs),
+            'final_output': RandomBuffer(64, buffer_size, **factory_kwargs),
+        }
         self.analytic_linear = linear(buffer_size, gamma, **factory_kwargs)
         self.eval()
 
     @torch.no_grad()
     def feature_expansion(self, X: torch.Tensor) -> torch.Tensor:
-        return self.buffer(self.backbone(X))
+        # print("Xshape------------------",X.shape)
+        model1 = FeatureExtractor(self.backbone)
+        out1, out2, out3, final_output = model1(X)
+        # print("out1.shape:",out1.shape)
+        # print("out2.shape:",out2.shape)
+        # print("out3.shape:",out3.shape)
+        # print("final.shape:",final_output.shape)
+        expanded_features = []
+
+        expanded_features.append(self.buffer['layer1'](torch.flatten(F.avg_pool2d(out1,out1.size()[3]),1)))
+        # print("out1")
+        # print(out1.view(out1.size(0),-1).shape)
+        
+        expanded_features.append(self.buffer['layer2'](torch.flatten(F.avg_pool2d(out2,out2.size()[3]),1)))
+        # print("out2")
+        # print(out2.view(out2.size(0),-1).shape)
+
+        expanded_features.append(self.buffer['layer3'](torch.flatten(F.avg_pool2d(out3,out3.size()[3]),1)))
+        # print("out3")
+        # print(out3.view(out3.size(0),-1).shape)
+
+        expanded_features.append(self.buffer['final_output'](final_output))
+        # print("final_out")
+        # return torch.cat(expanded_features,dim=1)
+        
+        # 用 torch.stack 堆叠特征，并计算它们的平均值
+        stacked_features = torch.stack(expanded_features, dim=0)
+        mean_features = torch.mean(stacked_features, dim=0)
+        return mean_features
 
     @torch.no_grad()
     def forward(self, X: torch.Tensor) -> torch.Tensor:
